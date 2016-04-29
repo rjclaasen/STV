@@ -12,6 +12,7 @@ namespace STV1
 
         public Pack(int size, Node location)
         {
+            monsters = new List<Monster>();
             for (int i = 0; i < size; i++)
             {
                 Monster m = new Monster(location);
@@ -33,6 +34,11 @@ namespace STV1
         public Node Location
         {
             get { return monsters[0].Location; }
+        }
+
+        public int Size
+        {
+            get { return monsters.Count; }
         }
     }
 }

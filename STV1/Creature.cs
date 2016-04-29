@@ -11,6 +11,7 @@ namespace STV1
         private float hitPoints;
         private Node location;
         private float attackRating;
+        protected bool dead = false;
 
         public Creature(Node location, float hitPoints, float attackRating)
         {
@@ -29,7 +30,15 @@ namespace STV1
             target.HitPoints -= attackRating;
         }
 
-        protected abstract void Die();
+        public bool IsDead()
+        {
+            return dead;
+        }
+
+        protected virtual void Die()
+        {
+            dead = true;
+        }
 
         public float HitPoints
         {
@@ -46,6 +55,11 @@ namespace STV1
         {
             get { return location; }
             set { location = value; }
+        }
+
+        public float AttackRating
+        {
+            get { return attackRating; }
         }
     }
 }

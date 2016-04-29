@@ -11,6 +11,11 @@ namespace STV1
         private List<Pack> packsInNode;
         private Player playerInNode;
 
+        public Node()
+        {
+            packsInNode = new List<Pack>();
+        }
+
         public void PackEnters(Pack enteringPack)
         {
             packsInNode.Add(enteringPack);
@@ -41,6 +46,16 @@ namespace STV1
         public bool PackFits(Pack pack)
         {
             return true;
+        }
+
+        public bool PlayerInNode()
+        {
+            return playerInNode != null;
+        }
+
+        public List<Pack> PacksInNode
+        {
+            get { return packsInNode; }
         }
     }
 }

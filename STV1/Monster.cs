@@ -13,7 +13,5 @@ namespace STV1
 
         public Monster(Node location, float hitPoints = DEFAULTHITPOINTS, float attackRating = DEFAULTATTACKRATING)
             : base(location, hitPoints, attackRating) { }
-
-        protected override void Die() { }
     }
 }

@@ -50,8 +50,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MonsterTest.cs" />
+    <Compile Include="TestCreature.cs" />
+    <Compile Include="MockCreature.cs" />
+    <Compile Include="TestMonster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestNode.cs" />
+    <Compile Include="TestPack.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\STV1\STV1.csproj">
