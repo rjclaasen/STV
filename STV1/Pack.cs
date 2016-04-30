@@ -20,7 +20,7 @@ namespace STV1
             }
         }
 
-        public void Move(Node target)
+        public bool Move(Node target)
         {
             if (Location.Adjacent(target) && Location.PackFits(this))
             {
@@ -28,7 +28,9 @@ namespace STV1
                 Location.PackLeaves(this);
                 foreach (Monster m in monsters)
                     m.Move(target);
+                return true;
             }
+            return false;
         }
 
         public Node Location
@@ -39,6 +41,12 @@ namespace STV1
         public int Size
         {
             get { return monsters.Count; }
+        }
+
+        public void Attack(Creature c)
+        {
+            foreach (Monster m in monsters)
+                m.Attack(c);
         }
     }
 }

@@ -20,12 +20,15 @@ namespace STV1_Tests
         [TestMethod]
         public void TestMove()
         {
-            Node n = new Node();
-            Pack p = new Pack(1, new Node());
+            Node n1 = new Node();
+            Node n2 = new Node();
 
-            p.Move(n);
+            n1.AddConnection(n2);
+            Pack p = new Pack(1, n1);
 
-            Assert.AreEqual(n, p.Location);
+            p.Move(n2);
+
+            Assert.AreEqual(n2, p.Location);
         }
     }
 }

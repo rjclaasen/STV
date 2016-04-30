@@ -32,5 +32,17 @@ namespace STV1
         }
 
         protected override void Die() { }
+
+        public override float HitPoints
+        {
+            get { return base.HitPoints; }
+            set
+            {
+                if (value > maxHitPoints)
+                    base.HitPoints = maxHitPoints;
+                else
+                    base.HitPoints = value;
+            }
+        }
     }
 }

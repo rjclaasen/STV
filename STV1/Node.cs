@@ -8,12 +8,38 @@ namespace STV1
 {
     public class Node
     {
+        private const int MAXCONNECTIONS = 4;
+
         private List<Pack> packsInNode;
         private Player playerInNode;
+        private List<Node> connectedNodes;
 
         public Node()
         {
             packsInNode = new List<Pack>();
+            connectedNodes = new List<Node>();
+        }
+
+        public bool AddConnection(Node n)
+        {
+            if (ConnectionsCount >= MAXCONNECTIONS || n.ConnectionsCount >= MAXCONNECTIONS 
+                || Adjacent(n) || n.Adjacent(this))
+                return false;
+            else
+            {
+                connectedNodes.Add(n);
+                n.connectedNodes.Add(this);
+                return true;
+            }
+        }
+
+        public void RemoveConnection(Node n)
+        {
+            if (connectedNodes.Contains(n))
+            {
+                connectedNodes.Remove(n);
+                n.RemoveConnection(this);
+            }
         }
 
         public void PackEnters(Pack enteringPack)
@@ -36,10 +62,9 @@ namespace STV1
             playerInNode = null;
         }
 
-        // TODO: 
         public bool Adjacent(Node other)
         {
-            return true;
+            return connectedNodes.Contains(other);
         }
 
         // TODO: Check capacity
@@ -56,6 +81,11 @@ namespace STV1
         public List<Pack> PacksInNode
         {
             get { return packsInNode; }
+        }
+
+        public int ConnectionsCount
+        {
+            get { return connectedNodes.Count; }
         }
     }
 }

@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace STV1
 {
-    public class Item
+    public abstract class Item
     {
+        // In which Player instance the item is. Null if none.
+        protected Player player;
+
+        public abstract void Use();
+
+        public void PickUp(Player p)
+        {
+            player = p;
+        }
     }
 }

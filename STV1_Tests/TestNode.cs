@@ -8,6 +8,30 @@ namespace STV1_Tests
     public class TestNode
     {
         [TestMethod]
+        public void TestAddConnection()
+        {
+            Node n = new Node();
+
+            Node o = new Node();
+
+            Assert.IsTrue(n.AddConnection(o));
+            Assert.AreEqual(1, n.ConnectionsCount);
+            Assert.AreEqual(1, o.ConnectionsCount);
+        }
+
+        [TestMethod]
+        public void TestRemoveConnection()
+        {
+            Node n = new Node();
+            Node o = new Node();
+
+            n.AddConnection(o);
+            n.RemoveConnection(o);
+            Assert.AreEqual(0, n.ConnectionsCount);
+            Assert.AreEqual(0, o.ConnectionsCount);
+        }
+
+        [TestMethod]
         public void TestPlayerInNode()
         {
             Node n = new Node();
@@ -36,6 +60,23 @@ namespace STV1_Tests
             Assert.IsFalse(n.PacksInNode.Contains(p1));
             n.PackLeaves(p2);
             Assert.AreEqual(0, n.PacksInNode.Count);
+        }
+
+        [TestMethod]
+        public void TestAdjacent()
+        {
+            Node n = new Node();
+            Node o = new Node();
+
+            n.AddConnection(o);
+
+            Assert.IsTrue(n.Adjacent(o));
+            Assert.IsTrue(o.Adjacent(n));
+
+            n.RemoveConnection(o);
+
+            Assert.IsFalse(n.Adjacent(o));
+            Assert.IsFalse(o.Adjacent(n));
         }
     }
 }

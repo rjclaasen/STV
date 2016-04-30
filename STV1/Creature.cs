@@ -40,7 +40,7 @@ namespace STV1
             dead = true;
         }
 
-        public float HitPoints
+        public virtual float HitPoints
         {
             get { return hitPoints; }
             set
