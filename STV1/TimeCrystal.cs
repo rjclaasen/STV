@@ -9,7 +9,7 @@ namespace STV1
     public class TimeCrystal : Item
     {
         // TODO: Implement method.
-        public override void Use()
+        public override void Use(Player p)
         {
             throw new NotImplementedException();
         }

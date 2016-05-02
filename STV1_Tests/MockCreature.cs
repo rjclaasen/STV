@@ -12,5 +12,10 @@ namespace STV1_Tests
     {
         public MockCreature(Node location, float hitPoints = 2, float attackRating = 1)
             : base(location, hitPoints, attackRating) { }
+
+        protected override void Die()
+        {
+            base.Die();
+        }
     }
 }
