@@ -11,6 +11,7 @@ namespace STV1
         private Node start;
         private List<Node> otherNodes;
         private Node exit;
+        private int M;
 
         public Dungeon(int difficulty)
         {
@@ -25,8 +26,42 @@ namespace STV1
         /// <returns>The shortest path from u to v.</returns>
         public List<Node> ShortestPath(Node u, Node v)
         {
-            // TODO: Implement method.
-            return new List<Node>();
+            // Implement BFS with queue
+            Queue<Node> queue = new Queue<Node>();
+            List<Node> seen = new List<Node>();
+            List<Node> path = new List<Node>();
+            queue.Enqueue(u);
+            seen.Add(u);
+            bool found = false;
+            while (!found)
+            {
+                Node p = queue.Dequeue();
+                foreach (Node q in p.ConnectedNodes)
+                {
+                    if(q == v)
+                    {
+                        Node x = q;
+                        while(x != u)
+                        {
+                            path.Add(x);
+                            x = x.PrecedingNode;
+                        }
+                        path.Add(x);
+                        found = true;
+                    }
+                    if (!seen.Contains(q))
+                    {
+                        seen.Add(q);
+                        queue.Enqueue(q);
+                        q.PrecedingNode = p;
+                    }
+                }
+            }
+
+            foreach (Node n in seen)
+                n.PrecedingNode = null;
+            // TODO: Test method
+            return path;
         }
 
         public bool PathExists(Node u, Node v)
@@ -39,6 +74,23 @@ namespace STV1
             if(bridge != exit)
             {
                 
+            }
+        }
+
+        public Node Start
+        {
+            get { return start; }
+        }
+
+        public Node Exit
+        {
+            get { return exit; }
+        }
+        public List<Node> OtherNodes
+        {
+            get
+            {
+                return otherNodes;
             }
         }
 
