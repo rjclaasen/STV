@@ -15,8 +15,9 @@ namespace STV1_Tests
             float attackRating = 2;
             MockCreature m = new MockCreature(node, creatureHealth, attackRating);
 
-            Assert.AreEqual(creatureHealth, m.HitPoints);
             Assert.AreEqual(node, m.Location);
+            Assert.AreEqual(creatureHealth, m.HitPoints);
+            Assert.AreEqual(attackRating, m.AttackRating);
         }
 
         [TestMethod]

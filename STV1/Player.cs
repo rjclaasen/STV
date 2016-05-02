@@ -17,6 +17,7 @@ namespace STV1
             : base(location, hitPoints, attackRating)
         {
             maxHitPoints = hitPoints;
+            HitPoints = hitPoints;
         }
 
         public override void Move(Node target)
@@ -24,6 +25,11 @@ namespace STV1
             Location.PlayerLeaves();
             target.PlayerEnters(this);
             base.Move(target);
+        }
+
+        public void PickUp(Item item)
+        {
+            bag.Add(item);
         }
 
         // TODO: finish this method.

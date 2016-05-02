@@ -10,12 +10,28 @@ namespace STV1
     {
         List<Monster> monsters;
 
-        public Pack(int size, Node location)
+        /// <summary>
+        /// Creates a pack of the specified size at the specified location. Optional parameters allow you to set the monster health and attack rating.
+        /// </summary>
+        /// <param name="size">The size of the pack, in amount of monsters.</param>
+        /// <param name="location">The location of the pack.</param>
+        /// <param name="monsterHealth">The health that the monsters will have. If not used, or set to -1, the default value specified in the Monster class will be used.</param>
+        /// <param name="attackRating">The attack rating that the monster will have. If not used, or set to -1, the default value specified in the Monster class will be used.</param>
+        public Pack(int size, Node location, int monsterHealth = -1, int attackRating = -1)
         {
             monsters = new List<Monster>();
             for (int i = 0; i < size; i++)
             {
-                Monster m = new Monster(location);
+                Monster m;
+                if (monsterHealth != -1)
+                {
+                    if (attackRating != -1)
+                        m = new Monster(location, monsterHealth, attackRating);
+                    else
+                        m = new Monster(location, monsterHealth);
+                }
+                else
+                    m = new Monster(location);
                 monsters.Add(m);
             }
         }

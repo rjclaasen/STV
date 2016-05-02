@@ -30,5 +30,15 @@ namespace STV1_Tests
 
             Assert.AreEqual(n2, p.Location);
         }
+
+        [TestMethod]
+        public void TestAttack()
+        {
+            Pack p = new Pack(3, new Node(), 1, 1);
+            MockCreature c = new MockCreature(new Node(), 5);
+
+            p.Attack(c);
+            Assert.AreEqual(2, c.HitPoints);
+        }
     }
 }

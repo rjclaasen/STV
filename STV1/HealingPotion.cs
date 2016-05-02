@@ -10,12 +10,9 @@ namespace STV1
     {
         private float healValue = 10f;
 
-        public override void Use()
+        public override void Use(Player player)
         {
-            if(player != null)
-            {
-                player.HitPoints += healValue;
-            }
+            player.HitPoints += healValue;
         }
     }
 }

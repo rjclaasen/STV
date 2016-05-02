@@ -63,6 +63,11 @@ namespace STV1
             playerInNode = null;
         }
 
+        public void UseItem(Item item)
+        {
+            item.Use(playerInNode);
+        }
+
         public bool Adjacent(Node other)
         {
             return connectedNodes.Contains(other);
