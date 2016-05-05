@@ -15,7 +15,10 @@ namespace STV1
 
         public Dungeon(int difficulty)
         {
-
+            start = new Node();
+            exit = new Node();
+            start.AddConnection(exit);
+        
         }
 
         /// <summary>
@@ -30,6 +33,7 @@ namespace STV1
             Queue<Node> queue = new Queue<Node>();
             List<Node> seen = new List<Node>();
             List<Node> path = new List<Node>();
+            Dictionary<Node,Node> preceding = new Dictionary<Node, Node>();
             queue.Enqueue(u);
             seen.Add(u);
             bool found = false;
@@ -38,28 +42,28 @@ namespace STV1
                 Node p = queue.Dequeue();
                 foreach (Node q in p.ConnectedNodes)
                 {
-                    if(q == v)
-                    {
-                        Node x = q;
-                        while(x != u)
-                        {
-                            path.Add(x);
-                            x = x.PrecedingNode;
-                        }
-                        path.Add(x);
-                        found = true;
-                    }
                     if (!seen.Contains(q))
                     {
                         seen.Add(q);
                         queue.Enqueue(q);
-                        q.PrecedingNode = p;
+                        preceding.Add(q, p);
                     }
+                    if (q == v)
+                    {   
+                        Node x = q;
+                        while(x != u)
+                        {
+                            path.Add(x);
+                            preceding.TryGetValue(x, out x);
+                        }
+                        path.Add(x);
+                        found = true;
+                        break;
+                    }
+                    
                 }
             }
 
-            foreach (Node n in seen)
-                n.PrecedingNode = null;
             // TODO: Test method
             return path;
         }

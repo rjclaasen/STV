@@ -40,10 +40,8 @@ namespace STV1_Tests
         public void TestShortestPath()
         {
             Dungeon d = new Dungeon(1);
-            Node node1, node2;
-            node1 = d.Start;
-            node2 = d.Exit;
-            List<Node> path = d.ShortestPath(node1, node2);
+            
+            List<Node> path = d.ShortestPath(d.Start, d.Exit);
 
             Assert.AreNotEqual(0, path.Count);
             
