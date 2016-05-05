@@ -18,7 +18,7 @@ namespace STV1
             start = new Node();
             exit = new Node();
             start.AddConnection(exit);
-        
+
         }
 
         /// <summary>
