@@ -38,7 +38,13 @@ namespace STV1
             queue.Enqueue(u);
             seen.Add(u);
             bool found = false;
-            while (!found)
+            if (u == v)
+            {
+                path.Add(u);
+                found = true;
+
+            }
+            while (!found && queue.Count > 0)
             {
                 Node p = queue.Dequeue();
                 foreach (Node q in p.ConnectedNodes)
@@ -65,13 +71,16 @@ namespace STV1
                 }
             }
 
+            if (!found) // Pad bestaat niet
+                return null;
+
             // TODO: Test method
             return path;
         }
 
         public static bool PathExists(Node u, Node v)
         {
-            return ShortestPath(u, v).Count != 0;
+            return ShortestPath(u, v) != null;
         }
 
         public void Destroy(Node bridge)
