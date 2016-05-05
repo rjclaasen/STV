@@ -13,9 +13,13 @@ namespace STV1
         private Node exit;
         private int M;
 
+        // Temporary constructor. Doesn't actually create a proper dungeon.
+        // TODO: Make a proper dungeon in this constructor.
         public Dungeon(int difficulty)
         {
-
+            start = new Node();
+            exit = new Node();
+            start.Connect(exit);
         }
 
         /// <summary>
@@ -24,7 +28,7 @@ namespace STV1
         /// <param name="u">The entry node of the path.</param>
         /// <param name="v">The exit node of the path.</param>
         /// <returns>The shortest path from u to v.</returns>
-        public List<Node> ShortestPath(Node u, Node v)
+        public static List<Node> ShortestPath(Node u, Node v)
         {
             // Implement BFS with queue
             Queue<Node> queue = new Queue<Node>();
@@ -64,7 +68,7 @@ namespace STV1
             return path;
         }
 
-        public bool PathExists(Node u, Node v)
+        public static bool PathExists(Node u, Node v)
         {
             return ShortestPath(u, v).Count != 0;
         }
@@ -73,8 +77,29 @@ namespace STV1
         {
             if(bridge != exit)
             {
+                RemoveNode(bridge);
+
+                // Any bridge destruction is going to make the start unusable, so check if it exists, and if so, destroy it.
+                if (start != null)
+                    RemoveNode(start);
                 
+                // Remove nodes that can't reach the exit after the bridge is gone.
+                foreach(Node node in otherNodes)
+                    if (!PathExists(node, exit))
+                        RemoveNode(node);
             }
+        }
+
+        /// <summary>
+        /// Removes a single node from the dungeon: Removes it from otherNodes if it's in there, and calls its Destroy() method.
+        /// </summary>
+        /// <param name="node">The node to be removed from the dungeon.</param>
+        private void RemoveNode(Node node)
+        {
+            otherNodes.Remove(node);
+            node.Destroy();
+            if (node == start)
+                start = null;
         }
 
         public Node Start
@@ -85,13 +110,6 @@ namespace STV1
         public Node Exit
         {
             get { return exit; }
-        }
-        public List<Node> OtherNodes
-        {
-            get
-            {
-                return otherNodes;
-            }
         }
 
         public int Size

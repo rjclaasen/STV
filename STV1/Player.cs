@@ -33,7 +33,8 @@ namespace STV1
         }
 
         // TODO: finish this method.
-        public void GetCommand() {
+        public virtual void GetCommand()
+        {
             Command currentCommand = commands.Dequeue();
         }
 

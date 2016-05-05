@@ -14,7 +14,7 @@ namespace STV1_Tests
 
             Node o = new Node();
 
-            Assert.IsTrue(n.AddConnection(o));
+            Assert.IsTrue(n.Connect(o));
             Assert.AreEqual(1, n.ConnectionsCount);
             Assert.AreEqual(1, o.ConnectionsCount);
         }
@@ -25,8 +25,8 @@ namespace STV1_Tests
             Node n = new Node();
             Node o = new Node();
 
-            n.AddConnection(o);
-            n.RemoveConnection(o);
+            n.Connect(o);
+            n.Disconnect(o);
             Assert.AreEqual(0, n.ConnectionsCount);
             Assert.AreEqual(0, o.ConnectionsCount);
         }
@@ -68,12 +68,12 @@ namespace STV1_Tests
             Node n = new Node();
             Node o = new Node();
 
-            n.AddConnection(o);
+            n.Connect(o);
 
             Assert.IsTrue(n.Adjacent(o));
             Assert.IsTrue(o.Adjacent(n));
 
-            n.RemoveConnection(o);
+            n.Disconnect(o);
 
             Assert.IsFalse(n.Adjacent(o));
             Assert.IsFalse(o.Adjacent(n));

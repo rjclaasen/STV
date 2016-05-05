@@ -15,13 +15,20 @@ namespace STV1
         private List<Node> connectedNodes;
         private int capacity;
         private Node precedingNode;
-        public Node()
+
+        /// <summary>
+        /// Creates a new node.
+        /// </summary>
+        /// <param name="capacity">Optional parameter to set the capacity directly, instead of using the formula.</param>
+        public Node(int capacity = -1)
         {
             packsInNode = new List<Pack>();
             connectedNodes = new List<Node>();
+            if (capacity != -1)
+                this.capacity = capacity;
         }
 
-        public bool AddConnection(Node n)
+        public bool Connect(Node n)
         {
             if (ConnectionsCount >= MAXCONNECTIONS || n.ConnectionsCount >= MAXCONNECTIONS 
                 || Adjacent(n) || n.Adjacent(this))
@@ -34,13 +41,23 @@ namespace STV1
             }
         }
 
-        public void RemoveConnection(Node n)
+        public void Disconnect(Node n)
         {
             if (connectedNodes.Contains(n))
             {
                 connectedNodes.Remove(n);
-                n.RemoveConnection(this);
+                n.Disconnect(this);
             }
+        }
+
+        /// <summary>
+        /// Removes connections to and from this node, and the pack(s) inside.
+        /// </summary>
+        public void Destroy()
+        {
+            foreach (Node n in connectedNodes)
+                Disconnect(n);
+            packsInNode = null;
         }
 
         public void PackEnters(Pack enteringPack)
@@ -107,7 +124,13 @@ namespace STV1
             get { return precedingNode;}
             set { precedingNode = value; }
         }
+
         //TODO: Set capacity when we know which nodes are bridges
+        /// <summary>
+        /// Sets a node's capacity, based on the dungeon's constant and the level of the node.
+        /// </summary>
+        /// <param name="M">The dungeon's capacity constant.</param>
+        /// <param name="L">The level of the node.</param>
         public void setCapacity(int M, int L)
         {
             capacity = M * (L + 1);

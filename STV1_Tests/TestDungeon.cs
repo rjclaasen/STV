@@ -40,13 +40,39 @@ namespace STV1_Tests
         public void TestShortestPath()
         {
             Dungeon d = new Dungeon(1);
-            Node node1, node2;
-            node1 = d.Start;
-            node2 = d.Exit;
-            List<Node> path = d.ShortestPath(node1, node2);
+            List<Node> path = Dungeon.ShortestPath(d.Start, d.Exit);
 
             Assert.AreNotEqual(0, path.Count);
             
+        }
+
+        [TestMethod]
+        public void TestPathExists()
+        {
+            Node n1 = new Node();
+            Node n2 = new Node();
+
+            n1.Connect(n2);
+
+            Assert.IsTrue(Dungeon.PathExists(n1, n2));
+
+            n1.Disconnect(n2);
+
+            Assert.IsFalse(Dungeon.PathExists(n1, n2));
+        }
+
+        [TestMethod]
+        public void TestDestroy()
+        {
+            Dungeon d = new Dungeon(1);
+
+
+        }
+
+        [TestMethod]
+        public void TestLevel()
+        {
+            Assert.IsTrue(false);
         }
     }
 }
