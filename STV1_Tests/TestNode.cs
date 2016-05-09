@@ -10,9 +10,9 @@ namespace STV1_Tests
         [TestMethod]
         public void TestAddConnection()
         {
-            Node n = new Node();
+            Node n = new Node(0,0);
 
-            Node o = new Node();
+            Node o = new Node(0,0);
 
             Assert.IsTrue(n.Connect(o));
             Assert.AreEqual(1, n.ConnectionsCount);
@@ -22,8 +22,8 @@ namespace STV1_Tests
         [TestMethod]
         public void TestRemoveConnection()
         {
-            Node n = new Node();
-            Node o = new Node();
+            Node n = new Node(0,0);
+            Node o = new Node(0,0);
 
             n.Connect(o);
             n.Disconnect(o);
@@ -34,9 +34,9 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPlayerInNode()
         {
-            Node n = new Node();
+            Node n = new Node(0,0);
 
-            Player p = new Player(new Node(), 10, 5);
+            Player p = new Player(new Node(0,0), 10, 5);
 
             Assert.AreEqual(false, n.PlayerInNode());
             n.PlayerEnters(p);
@@ -48,10 +48,10 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPackEnterAndLeave()
         {
-            Node n = new Node();
+            Node n = new Node(0,0);
 
-            Pack p1 = new Pack(1, new Node());
-            Pack p2 = new Pack(2, new Node());
+            Pack p1 = new Pack(1, new Node(0,0));
+            Pack p2 = new Pack(2, new Node(0,0));
 
             n.PackEnters(p1);
             Assert.IsTrue(n.PacksInNode.Contains(p1));
@@ -65,8 +65,8 @@ namespace STV1_Tests
         [TestMethod]
         public void TestAdjacent()
         {
-            Node n = new Node();
-            Node o = new Node();
+            Node n = new Node(0,0);
+            Node o = new Node(0,0);
 
             n.Connect(o);
 

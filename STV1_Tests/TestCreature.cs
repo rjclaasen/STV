@@ -11,7 +11,7 @@ namespace STV1_Tests
         public void TestConstructor()
         {
             float creatureHealth = 10;
-            Node node = new Node();
+            Node node = new Node(0,0,0);
             float attackRating = 2;
             MockCreature m = new MockCreature(node, creatureHealth, attackRating);
 
@@ -23,7 +23,7 @@ namespace STV1_Tests
         [TestMethod]
         public void TestDead()
         {
-            MockCreature m = new MockCreature(new Node());
+            MockCreature m = new MockCreature(new Node(0,0));
 
             m.HitPoints = 0;
 
@@ -33,10 +33,10 @@ namespace STV1_Tests
         [TestMethod]
         public void TestMove()
         {
-            Node oldNode = new Node();
+            Node oldNode = new Node(0,0,0);
             MockCreature m = new MockCreature(oldNode);
 
-            Node newNode = new Node();
+            Node newNode = new Node(0,0,0);
 
             m.Move(newNode);
 
@@ -47,8 +47,8 @@ namespace STV1_Tests
         [TestMethod]
         public void TestAttack()
         {
-            MockCreature m1 = new MockCreature(new Node());
-            MockCreature m2 = new MockCreature(new Node());
+            MockCreature m1 = new MockCreature(new Node(0,0));
+            MockCreature m2 = new MockCreature(new Node(0,0));
 
             float startHealth = m2.HitPoints;
             float targetHealth = startHealth - m1.AttackRating;

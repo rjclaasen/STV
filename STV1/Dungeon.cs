@@ -12,14 +12,61 @@ namespace STV1
         private List<Node> otherNodes;
         private Node exit;
         private int M;
+        private const int NODESPERZONE = 10;
+        private const int MAXCONNECTIVITY = 3;
 
         // Temporary constructor. Doesn't actually create a proper dungeon.
         // TODO: Make a proper dungeon in this constructor.
         public Dungeon(int difficulty)
         {
-            start = new Node();
-            exit = new Node();
-            start.Connect(exit);
+            Random rnd = new Random();
+            start = new Node(0,M,0);
+            otherNodes = new List<Node>();
+            Node[] dungeon = new Node[(difficulty + 1) * NODESPERZONE + 2];
+            dungeon[0] = start;
+            dungeon[(difficulty + 1) * NODESPERZONE + 1] = exit;
+            /* Start = 0
+            * Zone k = 1 + (k-1) * NODESPERZONE tot (k * NODESPERZONE)
+            * Bridge of bridge level j = j * NODESPERZONE
+            */
+
+
+            //create the zones
+            for (int k = 1; k < difficulty + 2; k++)
+            {
+                int zoneStart = (k - 1) * NODESPERZONE + 1;
+                
+                //Connect the first two nodes with the last node of previous zone
+                dungeon[zoneStart] = new Node(0,M);
+                dungeon[zoneStart + 1] = new Node(0,M);
+                dungeon[zoneStart].Connect(dungeon[zoneStart - 1]);
+                dungeon[zoneStart + 1].Connect(dungeon[zoneStart - 1]);
+                //Create the nodes in the zone
+                for (int i = 2; i < NODESPERZONE; i++)
+                {
+                    Node x = new Node(0,M);
+                    dungeon[zoneStart + i] = x; 
+                    
+                    //Choose two nodes to connect to
+                    int a = rnd.Next(0,i);
+                    while(dungeon[zoneStart + a].ConnectionsCount > MAXCONNECTIVITY)
+                        a = rnd.Next(0, i);
+                    x.Connect(dungeon[zoneStart + a]);
+                    int b = a;
+                    while (b == a || dungeon[zoneStart + b].ConnectionsCount > MAXCONNECTIVITY)
+                        b = rnd.Next(0, i);
+                    x.Connect(dungeon[zoneStart + b]);
+                }
+                //Connect the last node of the zone (the bridge) to two earlier nodes
+                Node bridge = new Node(k,M);
+                dungeon[zoneStart + NODESPERZONE - 1] = bridge;
+                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 2]);
+                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 3]);
+            }
+            exit = dungeon[(difficulty + 1) * NODESPERZONE];
+            exit.setCapacity(M, -1);
+            for (int i = 1; i < (difficulty + 1) * NODESPERZONE-1; i++)
+                otherNodes.Add(dungeon[i]);
         }
 
         /// <summary>
@@ -78,6 +125,14 @@ namespace STV1
             return path;
         }
 
+        public bool AllNodesReachable()
+        {
+            foreach (Node n in otherNodes)
+                if (!PathExists(start, n))
+                    return false;
+            return true;
+        }
+
         public static bool PathExists(Node u, Node v)
         {
             return ShortestPath(u, v) != null;
@@ -127,9 +182,9 @@ namespace STV1
             get { return 2 + otherNodes.Count; }
         }
 
-        public int Level
+        public int Level(Node u)
         {
-            get { return 0; }
+            return u.Capacity / M;
         }
     }
 }

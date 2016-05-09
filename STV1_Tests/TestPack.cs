@@ -10,7 +10,7 @@ namespace STV1_Tests
         [TestMethod]
         public void TestConstructor()
         {
-            Node n = new Node();
+            Node n = new Node(0,0);
             Pack p = new Pack(5, n);
 
             Assert.AreEqual(5, p.Size);
@@ -22,8 +22,8 @@ namespace STV1_Tests
         {
             const int PACKSIZE = 1;
 
-            Node n1 = new Node(PACKSIZE);
-            Node n2 = new Node(PACKSIZE);
+            Node n1 = new Node(0,0,PACKSIZE);
+            Node n2 = new Node(0,0,PACKSIZE);
 
             n1.Connect(n2);
             Pack p = new Pack(PACKSIZE, n1);
@@ -36,8 +36,8 @@ namespace STV1_Tests
         [TestMethod]
         public void TestAttack()
         {
-            Pack p = new Pack(3, new Node(), 1, 1);
-            MockCreature c = new MockCreature(new Node(), 5);
+            Pack p = new Pack(3, new Node(0,0), 1, 1);
+            MockCreature c = new MockCreature(new Node(0,0), 5);
 
             p.Attack(c);
             Assert.AreEqual(2, c.HitPoints);

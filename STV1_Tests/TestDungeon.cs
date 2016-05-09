@@ -47,10 +47,30 @@ namespace STV1_Tests
         }
 
         [TestMethod]
+        public void TestDungeonConstructor()
+        {
+            Dungeon d = new Dungeon(1);
+            Assert.AreNotEqual(d.Start, d.Exit);
+            Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
+            Assert.IsTrue(d.AllNodesReachable());
+            //Make test regarding connectivity
+            
+        }
+
+        [TestMethod]
+        public void TestDungeonConstructor2()
+        {
+            Dungeon d = new Dungeon(2);
+            Assert.AreNotEqual(d.Start, d.Exit);
+            Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
+            Assert.IsTrue(d.AllNodesReachable());
+        }
+
+        [TestMethod]
         public void TestPathExists()
         {
-            Node n1 = new Node();
-            Node n2 = new Node();
+            Node n1 = new Node(0,0);
+            Node n2 = new Node(0,0);
 
             n1.Connect(n2);
 

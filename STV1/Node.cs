@@ -15,13 +15,15 @@ namespace STV1
         private List<Node> connectedNodes;
         private int capacity;
         private Node precedingNode;
-
+        private int level;
         /// <summary>
         /// Creates a new node.
         /// </summary>
         /// <param name="capacity">Optional parameter to set the capacity directly, instead of using the formula.</param>
-        public Node(int capacity = -1)
+        public Node(int level, int M, int capacity = -1)
         {
+            this.level = level;
+            this.capacity = M * (level + 1);
             packsInNode = new List<Pack>();
             connectedNodes = new List<Node>();
             if (capacity != -1)
@@ -117,7 +119,7 @@ namespace STV1
         public List<Node> ConnectedNodes
         {
             get { return connectedNodes; }
-        }
+        }     
         
         //TODO: Set capacity when we know which nodes are bridges
         /// <summary>
