@@ -11,19 +11,12 @@ namespace STV1_Tests
         [TestMethod]
         public void TestUseBridge()
         {
-            MockDungeon dungeon = new MockDungeon(1);
+            Dungeon dungeon = new Dungeon(1);
 
             Node targetBridge = new Node(0, 0);
 
             // Find any bridge in the dungeon.
-            foreach(Node n in dungeon.OtherNodes)
-            {
-                if(dungeon.IsBridge(n))
-                {
-                    targetBridge = n;
-                    break;
-                }
-            }
+            targetBridge = dungeon.GetBridge(1);
 
             Player player = new Player(targetBridge, 10, 10, dungeon);
 
