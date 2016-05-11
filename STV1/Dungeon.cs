@@ -177,6 +177,22 @@ namespace STV1
             return path;
         }
 
+        /// <summary>
+        /// Returns a Node that is a bridge with the specified level. Returns null if none is found.
+        /// </summary>
+        /// <param name="level">The level that the bridge should be.</param>
+        /// <returns>The bridge with the specified level. Null if not found.</returns>
+        public Node GetBridge(int level)
+        {
+            foreach(Node n in otherNodes)
+            {
+                if (Level(n) == level)
+                    return n;
+            }
+
+            return null;
+        }
+
         public bool AllNodesReachable()
         {
             foreach (Node n in otherNodes)
@@ -199,11 +215,16 @@ namespace STV1
                 // Any bridge destruction is going to make the start unusable, so check if it exists, and if so, destroy it.
                 if (start != null)
                     RemoveNode(start);
-                
+
                 // Remove nodes that can't reach the exit after the bridge is gone.
-                foreach(Node node in otherNodes)
+                List<Node> toBeRemoved = new List<Node>();
+
+                foreach (Node node in otherNodes)
                     if (!PathExists(node, exit))
-                        RemoveNode(node);
+                        toBeRemoved.Add(node);
+
+                foreach (Node n in toBeRemoved)
+                    RemoveNode(n);
             }
         }
 
