@@ -30,19 +30,22 @@ namespace STV1
 
         }
 
-        public void NextDungeon()
+        public Dungeon NextDungeon()
         {
             if (dungeon == null)
             {
                 dungeon = new Dungeon(1);
                 difficulty = 1;
+                player.Location = dungeon.Start;
                 
             }
             else
             {
                 difficulty++;
                 dungeon = new Dungeon(difficulty);
+                player.Location = dungeon.Start;
             }
+            return dungeon;
         }
     }
 }

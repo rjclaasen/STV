@@ -16,7 +16,7 @@ namespace STV1
         private int capacity;
         private int level;
         private bool destroyed = false;
-
+        private List<Item> items;
         /// <summary>
         /// Creates a new node.
         /// </summary>
@@ -29,6 +29,7 @@ namespace STV1
             connectedNodes = new List<Node>();
             if (capacity != -1)
                 this.capacity = capacity;
+            items = new List<Item>();
         }
 
         public bool Connect(Node n)
@@ -77,6 +78,9 @@ namespace STV1
         public void PlayerEnters(Player player)
         {
             playerInNode = player;
+            foreach (Item item in items)
+                player.PickUp(item);
+            items = new List<Item>();
         }
 
         public void PlayerLeaves()
@@ -87,6 +91,10 @@ namespace STV1
         public void UseItem(Item item)
         {
             item.Use(playerInNode);
+        }
+        public void AddItem(Item item)
+        {
+            items.Add(item);
         }
 
         public bool Adjacent(Node other)

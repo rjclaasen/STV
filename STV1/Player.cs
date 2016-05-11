@@ -13,6 +13,7 @@ namespace STV1
         private List<Item> bag;
         Queue<Command> commands;
         private Dungeon dungeon;
+        private Game game;
 
         /// <summary>
         /// Creates a Player instance.
@@ -33,6 +34,8 @@ namespace STV1
 
         public override void Move(Node target)
         {
+            if (target == dungeon.Exit)
+            { game.NextDungeon(); }
             Location.PlayerLeaves();
             target.PlayerEnters(this);
             base.Move(target);
