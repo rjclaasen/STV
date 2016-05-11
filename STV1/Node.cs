@@ -159,6 +159,7 @@ namespace STV1
         {
             while (playerInNode != null && packsInNode.Count > 0)
                 doCombat(playerInNode);
+
         }
 
         public void doCombat(Player player)
@@ -169,6 +170,7 @@ namespace STV1
                 inCombat = doCombatRound(player, packsInNode[0]);
             }
             return;
+
         }
 
         public bool doCombatRound(Player player, Pack pack)
@@ -201,7 +203,6 @@ namespace STV1
             if (pack.Retreat(player))
                 return false;
             return true;
-                
         }
 
     }
