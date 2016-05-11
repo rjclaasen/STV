@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MockDungeon.cs" />
     <Compile Include="TestCreature.cs" />
     <Compile Include="MockCreature.cs" />
     <Compile Include="TestDungeon.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="TestNode.cs" />
     <Compile Include="TestPack.cs" />
     <Compile Include="TestPlayer.cs" />
+    <Compile Include="TestTimeCrystal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\STV1\STV1.csproj">

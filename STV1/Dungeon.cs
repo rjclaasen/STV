@@ -9,7 +9,7 @@ namespace STV1
     public class Dungeon
     {
         private Node start;
-        private List<Node> otherNodes;
+        protected List<Node> otherNodes;
         private Node exit;
         private const int M = 5;
         private const int NODESPERZONE = 10;
@@ -188,6 +188,11 @@ namespace STV1
         public int Level(Node u)
         {
             return u.Capacity / M;
+        }
+
+        public bool IsBridge(Node u)
+        {
+            return Level(u) >= 1;
         }
     }
 }

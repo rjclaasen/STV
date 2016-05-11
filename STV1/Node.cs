@@ -15,6 +15,8 @@ namespace STV1
         private List<Node> connectedNodes;
         private int capacity;
         private int level;
+        private bool destroyed = false;
+
         /// <summary>
         /// Creates a new node.
         /// </summary>
@@ -52,13 +54,14 @@ namespace STV1
         }
 
         /// <summary>
-        /// Removes connections to and from this node, and the pack(s) inside.
+        /// Removes connections to and from this node, and the pack(s) inside. 
         /// </summary>
         public void Destroy()
         {
-            foreach (Node n in connectedNodes)
-                Disconnect(n);
+            while (connectedNodes.Count > 0)
+                Disconnect(connectedNodes[0]);
             packsInNode = null;
+            destroyed = true;
         }
 
         public void PackEnters(Pack enteringPack)
@@ -134,6 +137,11 @@ namespace STV1
         public int Capacity
         {
             get { return capacity;}
+        }
+
+        public bool Destroyed
+        {
+            get { return destroyed; }
         }
     }
 }

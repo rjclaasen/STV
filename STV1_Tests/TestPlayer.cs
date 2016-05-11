@@ -13,7 +13,7 @@ namespace STV1_Tests
             Node n = new Node(0,0);
             float hp = 10;
             float ar = 2;
-            Player p = new Player(n, hp, ar);
+            Player p = new Player(n, hp, ar, null);
 
             Assert.AreEqual(n, p.Location);
             Assert.AreEqual(hp,p.HitPoints);

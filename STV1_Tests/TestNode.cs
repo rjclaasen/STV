@@ -36,7 +36,7 @@ namespace STV1_Tests
         {
             Node n = new Node(0,0);
 
-            Player p = new Player(new Node(0,0), 10, 5);
+            Player p = new Player(new Node(0,0), 10, 5, null);
 
             Assert.AreEqual(false, n.PlayerInNode());
             n.PlayerEnters(p);

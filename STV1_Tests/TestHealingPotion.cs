@@ -10,7 +10,7 @@ namespace STV1_Tests
         [TestMethod]
         public void TestUse()
         {
-            Player p = new Player(new Node(0,0), 15, 5);
+            Player p = new Player(new Node(0,0), 15, 5, null);
             HealingPotion hp1 = new HealingPotion();
             HealingPotion hp2 = new HealingPotion();
 

@@ -12,12 +12,23 @@ namespace STV1
         private int killPoints;
         private List<Item> bag;
         Queue<Command> commands;
+        private Dungeon dungeon;
 
-        public Player(Node location, float hitPoints, float attackRating)
+        /// <summary>
+        /// Creates a Player instance.
+        /// </summary>
+        /// <param name="location">The location the Player starts at.</param>
+        /// <param name="hitPoints">The amount of hit points the Player has.</param>
+        /// <param name="attackRating">The attack rating of the Player.</param>
+        /// <param name="dungeon">The Dungeon the player is in. Can be null during testing sometimes.</param>
+        public Player(Node location, float hitPoints, float attackRating, Dungeon dungeon)
             : base(location, hitPoints, attackRating)
         {
             maxHitPoints = hitPoints;
             HitPoints = hitPoints;
+            this.dungeon = dungeon;
+
+            location.PlayerEnters(this);
         }
 
         public override void Move(Node target)
@@ -50,6 +61,11 @@ namespace STV1
                 else
                     base.HitPoints = value;
             }
+        }
+
+        public Dungeon Dungeon
+        {
+            get { return dungeon; }
         }
     }
 }
