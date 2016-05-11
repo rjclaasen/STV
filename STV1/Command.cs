@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace STV1
 {
-    class Command
+    public class Command
     {
+        public bool useItem;
+        public bool timeCrystal;
+        public bool healingPotion;
+        public bool move;
+        public bool retreat;
+        public Node node;
 
-    }
-
-    class CommandMove : Command
-    {
-
-    }
-
-    class CommandUseItem : Command
-    {
-
-    }
-
-    class CommandRetreat : Command
-    {
-
+        public Command(bool timeCrystal, bool healingPotion, bool move, bool retreat, Node node = null)
+        {
+            useItem = timeCrystal || healingPotion;
+            this.timeCrystal = timeCrystal;
+            this.healingPotion = healingPotion;
+            this.move = move;
+            this.node = node;
+            this.retreat = retreat;
+        }
     }
 }

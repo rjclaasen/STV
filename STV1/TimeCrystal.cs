@@ -15,7 +15,6 @@ namespace STV1
             Node bridge = player.Location;
 
             bool onbridge = dungeon.IsBridge(bridge);
-            bool combat = false;
 
             // Destroy the bridge and nodes behind it.
             if (onbridge)
@@ -40,12 +39,6 @@ namespace STV1
                 }
 
                 return;
-            }
-
-            // Apply damage to all creatures in enemy pack, instead of to just one.
-            if (combat)
-            {
-                
             }
         }
     }

@@ -16,6 +16,7 @@ namespace STV1
         private const int MAXCONNECTIVITY = 3;
         private const int TOTALMONSTERS = 50;
         private const int TOTALPACKS = 5;
+        private const int ITEMSPERZONE = 10;
         private int packSize;
 
         // Temporary constructor. Doesn't actually create a proper dungeon.
@@ -116,6 +117,23 @@ namespace STV1
                             p = new Pack(mobs - actualmobs, n); 
                         actualmobs += p.Size;
                     }
+                }
+            }
+
+            // Add items
+            for(int k = 1; k < difficulty + 2; k++)
+            {
+                int zoneStart = (k - 1) * NODESPERZONE + 1;
+                int zoneEnd = k * NODESPERZONE;
+
+                for (int i = 0; i < ITEMSPERZONE; i++)
+                {
+                    int x = rnd.Next(zoneStart + i, zoneEnd + 1);
+                    float j = rnd.Next();
+                    if (j < 0.1f)
+                        dungeon[x].AddItem(new TimeCrystal());
+                    else
+                        dungeon[x].AddItem(new HealingPotion());
                 }
             }
 
