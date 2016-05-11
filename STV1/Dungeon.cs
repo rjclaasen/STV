@@ -14,6 +14,9 @@ namespace STV1
         private const int M = 5;
         private const int NODESPERZONE = 10;
         private const int MAXCONNECTIVITY = 3;
+        private const int TOTALMONSTERS = 50;
+        private const int TOTALPACKS = 5;
+        private int packSize;
 
         // Temporary constructor. Doesn't actually create a proper dungeon.
         // TODO: Make a proper dungeon in this constructor.
@@ -48,14 +51,18 @@ namespace STV1
                     dungeon[zoneStart + i] = x; 
                     
                     //Choose two nodes to connect to
-                    int a = rnd.Next(0,i);
-                    while(dungeon[zoneStart + a].ConnectionsCount > MAXCONNECTIVITY)
-                        a = rnd.Next(0, i);
-                    x.Connect(dungeon[zoneStart + a]);
+                    int a = zoneStart + rnd.Next(0,i);
+                    while(dungeon[a].ConnectionsCount > MAXCONNECTIVITY)
+                        a = zoneStart + rnd.Next(0, i);
+                    x.Connect(dungeon[a]);
                     int b = a;
-                    while (b == a || dungeon[zoneStart + b].ConnectionsCount > MAXCONNECTIVITY)
-                        b = rnd.Next(0, i);
-                    x.Connect(dungeon[zoneStart + b]);
+                    while (b == a || dungeon[b].ConnectionsCount > MAXCONNECTIVITY)
+                        b = zoneStart + rnd.Next(0, i);
+                    x.Connect(dungeon[b]);
+                    if(dungeon[b].Adjacent(dungeon[a]))
+                    {
+                        dungeon[b].Disconnect(dungeon[a]);
+                    }
                 }
                 //Connect the last node of the zone (the bridge) to two earlier nodes
                 Node bridge = new Node(k,M);
@@ -63,11 +70,53 @@ namespace STV1
                 bridge.Connect(dungeon[zoneStart + NODESPERZONE - 2]);
                 bridge.Connect(dungeon[zoneStart + NODESPERZONE - 3]);
             }
+
             exit = dungeon[(difficulty + 1) * NODESPERZONE];
             exit.setCapacity(M, -1);
             for (int i = 1; i < (difficulty + 1) * NODESPERZONE-1; i++)
                 otherNodes.Add(dungeon[i]);
 
+            while (ConnectivityDegree > 3)
+            {
+                Node n = new Node(0, M);
+                foreach (Node m in otherNodes)
+                    if (m.ConnectionsCount < 3)
+                    {
+                        m.Connect(n);
+                        break;
+                    }
+                otherNodes.Add(n);
+            }
+
+            // Add monsters
+            packSize = TOTALMONSTERS / TOTALPACKS;
+            for(int k = 1; k < difficulty + 2; k++)
+            {
+                int zoneStart = (k - 1) * NODESPERZONE + 1;
+                int zoneEnd = k * NODESPERZONE;
+                int mobs = 2 * k * TOTALMONSTERS / ((difficulty + 2) * (difficulty + 1));
+                int actualmobs = 0;
+                while(actualmobs < mobs)
+                {
+                    int x = rnd.Next(zoneStart,zoneEnd + 1);
+                    Node n = dungeon[x];
+                    int mobsInNode = 0;
+                    foreach (Pack p in n.PacksInNode)
+                        mobsInNode += p.Size;
+
+                    if (mobsInNode < n.Capacity)
+                    {
+                        Pack p;
+                        if (packSize <= n.Capacity - mobsInNode && packSize <= mobs - actualmobs)
+                            p = new Pack(packSize, n);
+                        else if (n.Capacity - mobsInNode <= mobs - actualmobs)
+                            p = new Pack(n.Capacity - mobsInNode, n);
+                        else
+                            p = new Pack(mobs - actualmobs, n); 
+                        actualmobs += p.Size;
+                    }
+                }
+            }
 
         }
 
@@ -187,7 +236,20 @@ namespace STV1
 
         public int Level(Node u)
         {
-            return u.Capacity / M;
+            return u.Capacity / M -1;
+        }
+
+        public double ConnectivityDegree
+        {
+            get
+            {
+                int connections = 0;
+                foreach (Node n in otherNodes)
+                    connections += n.ConnectionsCount;
+                connections += start.ConnectionsCount;
+                connections += exit.ConnectionsCount;
+                return (double)connections / (otherNodes.Count + 2);
+            }
         }
 
         public bool IsBridge(Node u)

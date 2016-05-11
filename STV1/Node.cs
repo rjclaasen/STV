@@ -33,7 +33,7 @@ namespace STV1
 
         public bool Connect(Node n)
         {
-            if (ConnectionsCount >= MAXCONNECTIONS || n.ConnectionsCount >= MAXCONNECTIONS 
+            if (ConnectionsCount >= MAXCONNECTIONS || n.ConnectionsCount >= MAXCONNECTIONS
                 || Adjacent(n) || n.Adjacent(this))
                 return false;
             else
@@ -94,7 +94,7 @@ namespace STV1
             return connectedNodes.Contains(other);
         }
 
-        
+
         public bool PackFits(Pack pack)
         {
             int size = 0;
@@ -121,8 +121,8 @@ namespace STV1
         public List<Node> ConnectedNodes
         {
             get { return connectedNodes; }
-        }     
-        
+        }
+
         //TODO: Set capacity when we know which nodes are bridges
         /// <summary>
         /// Sets a node's capacity, based on the dungeon's constant and the level of the node.
@@ -136,7 +136,18 @@ namespace STV1
 
         public int Capacity
         {
-            get { return capacity;}
+            get { return capacity; }
+        }
+
+        public bool AddPack(Pack p)
+        {
+            if (PackFits(p))
+            {
+                packsInNode.Add(p);
+                return true;
+            }
+            else
+                return false;
         }
 
         public bool Destroyed
