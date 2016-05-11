@@ -9,7 +9,7 @@ namespace STV1_Tests
     {
         // Tests the usage of a time crystal on a bridge.
         [TestMethod]
-        public void TestTimeCrystalUseBridge()
+        public void TestUseBridge()
         {
             Dungeon dungeon = new Dungeon(1);
 
@@ -23,12 +23,12 @@ namespace STV1_Tests
             targetBridge.UseItem(new TimeCrystal());
 
             Assert.IsTrue(targetBridge.Destroyed);
-            Assert.IsTrue(dungeon.PathExists(player.Location, dungeon.Exit));
+            Assert.IsTrue(Dungeon.PathExists(player.Location, dungeon.Exit));
         }
 
         // Tests the usage of a time crystal in combat.
         [TestMethod]
-        public void TestTimeCrystalUseCombat()
+        public void TestUseCombat()
         {
             Node contested = new Node(1, 1, 10);
             Pack pack = new Pack(10, contested, 10, 5);

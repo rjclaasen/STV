@@ -8,7 +8,7 @@ namespace STV1_Tests
     public class TestPlayer
     {
         [TestMethod]
-        public void TestPlayerConstructor()
+        public void TestConstructor()
         {
             Node n = new Node(0,0);
             float hp = 10;
