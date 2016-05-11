@@ -18,7 +18,7 @@ namespace STV1_Tests
             // Find any bridge in the dungeon.
             targetBridge = dungeon.GetBridge(1);
 
-            Player player = new Player(targetBridge, 10, 10, dungeon);
+            Player player = new Player(targetBridge, 10, 10, dungeon, null);
 
             targetBridge.UseItem(new TimeCrystal());
 
@@ -30,6 +30,9 @@ namespace STV1_Tests
         [TestMethod]
         public void TestUseCombat()
         {
+            Node contested = new Node(1, 1, 10);
+            Pack pack = new Pack(10, contested, 10, 5);
+            Player player = new Player(contested, 150, 10, null, null);
             Assert.IsFalse(true);
         }
     }

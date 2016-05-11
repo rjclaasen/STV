@@ -18,7 +18,7 @@ namespace STV1
         {
             difficulty = 1;
             dungeon = new Dungeon(difficulty);
-            player = new Player(dungeon.Start, 25, 5, dungeon);
+            player = new Player(dungeon.Start, 25, 5, dungeon, this);
         }
         public bool Save(string filename)
         {

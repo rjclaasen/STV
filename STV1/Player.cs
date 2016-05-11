@@ -22,13 +22,13 @@ namespace STV1
         /// <param name="hitPoints">The amount of hit points the Player has.</param>
         /// <param name="attackRating">The attack rating of the Player.</param>
         /// <param name="dungeon">The Dungeon the player is in. Can be null during testing sometimes.</param>
-        public Player(Node location, float hitPoints, float attackRating, Dungeon dungeon)
+        public Player(Node location, float hitPoints, float attackRating, Dungeon dungeon, Game game)
             : base(location, hitPoints, attackRating)
         {
             maxHitPoints = hitPoints;
             HitPoints = hitPoints;
             this.dungeon = dungeon;
-
+            this.game = game;
             location.PlayerEnters(this);
         }
 
