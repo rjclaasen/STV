@@ -23,9 +23,10 @@ namespace STV1
         public virtual void Move(Node target) 
         {
             Location = target;
+            target.CheckForCombat();
         }
 
-        public void Attack(Creature target)
+        public virtual void Attack(Creature target)
         {
             target.HitPoints -= attackRating;
         }

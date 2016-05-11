@@ -38,15 +38,23 @@ namespace STV1
             base.Move(target);
         }
 
+        public override void Attack(Creature target)
+        {
+            base.Attack(target);
+            if (target.IsDead())
+                killPoints++;
+        }
+
         public void PickUp(Item item)
         {
             bag.Add(item);
         }
 
         // TODO: finish this method.
-        public virtual void GetCommand()
+        public Command GetCommand()
         {
             Command currentCommand = commands.Dequeue();
+            return currentCommand;
         }
 
         protected override void Die() { }
@@ -61,6 +69,30 @@ namespace STV1
                 else
                     base.HitPoints = value;
             }
+        }
+
+        public bool UseTimeCrystal()
+        {
+            foreach (Item item in bag)
+                if (item.GetType() == typeof(TimeCrystal))
+                {
+                    bag.Remove(item);
+                    item.Use(this);
+                    return true;
+                }
+            return false;
+        }
+
+        public bool UseHealingPotion()
+        {
+            foreach (Item item in bag)
+                if (item.GetType() == typeof(HealingPotion))
+                {
+                    bag.Remove(item);
+                    item.Use(this);
+                    return true;
+                }
+            return false;
         }
 
         public Dungeon Dungeon

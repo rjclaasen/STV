@@ -154,5 +154,55 @@ namespace STV1
         {
             get { return destroyed; }
         }
+
+        public void CheckForCombat()
+        {
+            while (playerInNode != null && packsInNode.Count > 0)
+                doCombat(playerInNode);
+        }
+
+        public void doCombat(Player player)
+        {
+            bool inCombat = true;
+            while(inCombat)
+            {
+                inCombat = doCombatRound(player, packsInNode[0]);
+            }
+            return;
+        }
+
+        public bool doCombatRound(Player player, Pack pack)
+        {
+            bool timeCrystal = false;
+            Command c = player.GetCommand();
+            if (c.useItem)
+            {
+
+                if (c.timeCrystal) { timeCrystal = player.UseTimeCrystal(); }
+                else if (c.healingPotion) { player.UseHealingPotion(); }
+
+            }
+            if (timeCrystal)
+                foreach (Monster m in pack.Monsters)
+                {
+                    player.Attack(m);
+                }
+
+            else
+                player.Attack(pack.Monster);
+            pack.Attack(player);
+
+            pack.Update();
+            if (pack.isDead || player.IsDead())
+                return false;
+            Command g = player.GetCommand();
+            if (g.retreat)
+                player.Move(g.node);
+            if (pack.Retreat(player))
+                return false;
+            return true;
+                
+        }
+
     }
 }
