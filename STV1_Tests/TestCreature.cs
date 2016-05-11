@@ -8,7 +8,7 @@ namespace STV1_Tests
     public class TestCreature
     {
         [TestMethod]
-        public void TestConstructor()
+        public void TestCreatureConstructor()
         {
             float creatureHealth = 10;
             Node node = new Node(0,0,0);
@@ -21,17 +21,21 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestDead()
+        public void TestPlayerAttack()
         {
-            MockCreature m = new MockCreature(new Node(0,0));
+            MockCreature m1 = new MockCreature(null);
+            MockCreature m2 = new MockCreature(null);
 
-            m.HitPoints = 0;
+            float startHealth = m2.HitPoints;
+            float targetHealth = startHealth - m1.AttackRating;
 
-            Assert.AreEqual(true, m.IsDead());
+            m1.Attack(m2);
+
+            Assert.AreEqual(targetHealth, m2.HitPoints);
         }
 
         [TestMethod]
-        public void TestMove()
+        public void TestCreatureMove()
         {
             Node oldNode = new Node(0,0,0);
             MockCreature m = new MockCreature(oldNode);
@@ -45,17 +49,16 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestAttack()
+        public void TestCreatureHitPoints()
         {
-            MockCreature m1 = new MockCreature(new Node(0,0));
-            MockCreature m2 = new MockCreature(new Node(0,0));
+            MockCreature m = new MockCreature(null);
+            const float TARGETHP = 50f;
 
-            float startHealth = m2.HitPoints;
-            float targetHealth = startHealth - m1.AttackRating;
+            m.HitPoints = TARGETHP;
+            Assert.AreEqual(TARGETHP, m.HitPoints);
 
-            m1.Attack(m2);
-
-            Assert.AreEqual(targetHealth, m2.HitPoints);
+            m.HitPoints = 0;
+            Assert.AreEqual(true, m.IsDead());
         }
     }
 }

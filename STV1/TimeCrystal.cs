@@ -31,7 +31,7 @@ namespace STV1
                 // Go through all exit-path-possible nodes, and move the player to the first one that has an exit.
                 foreach (Node n in possibleSafeNodes)
                 {
-                    if (Dungeon.PathExists(n, dungeon.Exit))
+                    if (dungeon.PathExists(n, dungeon.Exit))
                     {
                         player.Location = n;
                         break;

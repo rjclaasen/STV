@@ -8,7 +8,7 @@ namespace STV1_Tests
     public class TestPack
     {
         [TestMethod]
-        public void TestConstructor()
+        public void TestPackConstructor()
         {
             Node n = new Node(0,0);
             Pack p = new Pack(5, n);
@@ -18,7 +18,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestMove()
+        public void TestPackMove()
         {
             const int PACKSIZE = 1;
 
@@ -34,7 +34,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestAttack()
+        public void TestPackAttack()
         {
             Pack p = new Pack(3, new Node(0,0), 1, 1);
             MockCreature c = new MockCreature(new Node(0,0), 5);

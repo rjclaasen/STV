@@ -9,7 +9,7 @@ namespace STV1
     public class Dungeon
     {
         private Node start;
-        protected List<Node> otherNodes;
+        private List<Node> otherNodes;
         private Node exit;
         private const int M = 5;
         private const int NODESPERZONE = 10;
@@ -26,7 +26,7 @@ namespace STV1
             Random rnd = new Random();
             start = new Node(0,M,0);
             otherNodes = new List<Node>();
-            Node[] dungeon = new Node[(difficulty + 1) * NODESPERZONE + 2];
+            Node[] dungeon = new Node[(difficulty + 1) * NODESPERZONE + difficulty + 2];
             dungeon[0] = start;
             dungeon[(difficulty + 1) * NODESPERZONE + 1] = exit;
             /* Start = 0
@@ -38,18 +38,19 @@ namespace STV1
             //create the zones
             for (int k = 1; k < difficulty + 2; k++)
             {
-                int zoneStart = (k - 1) * NODESPERZONE + 1;
+                int zoneStart = (k - 1) * NODESPERZONE + k;
                 
                 //Connect the first two nodes with the last node of previous zone
                 dungeon[zoneStart] = new Node(0,M);
                 dungeon[zoneStart + 1] = new Node(0,M);
                 dungeon[zoneStart].Connect(dungeon[zoneStart - 1]);
                 dungeon[zoneStart + 1].Connect(dungeon[zoneStart - 1]);
+
                 //Create the nodes in the zone
                 for (int i = 2; i < NODESPERZONE; i++)
                 {
                     Node x = new Node(0,M);
-                    dungeon[zoneStart + i] = x; 
+                    dungeon[zoneStart + i] = x;
                     
                     //Choose two nodes to connect to
                     int a = zoneStart + rnd.Next(0,i);
@@ -67,14 +68,14 @@ namespace STV1
                 }
                 //Connect the last node of the zone (the bridge) to two earlier nodes
                 Node bridge = new Node(k,M);
-                dungeon[zoneStart + NODESPERZONE - 1] = bridge;
+                dungeon[zoneStart + NODESPERZONE] = bridge;
+                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 1]);
                 bridge.Connect(dungeon[zoneStart + NODESPERZONE - 2]);
-                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 3]);
             }
 
-            exit = dungeon[(difficulty + 1) * NODESPERZONE];
+            exit = dungeon[dungeon.Length - 1];
             exit.setCapacity(M, -1);
-            for (int i = 1; i < (difficulty + 1) * NODESPERZONE-1; i++)
+            for (int i = 1; i <= dungeon.Length - 2; i++)
                 otherNodes.Add(dungeon[i]);
 
             while (ConnectivityDegree > 3)
@@ -144,7 +145,7 @@ namespace STV1
         /// <param name="u">The entry node of the path.</param>
         /// <param name="v">The exit node of the path.</param>
         /// <returns>The shortest path from u to v.</returns>
-        public static List<Node> ShortestPath(Node u, Node v)
+        public List<Node> ShortestPath(Node u, Node v)
         {
             // Implement BFS with queue
             Queue<Node> queue = new Queue<Node>();
@@ -195,6 +196,11 @@ namespace STV1
             return path;
         }
 
+        public bool PathExists(Node u, Node v)
+        {
+            return ShortestPath(u, v) != null;
+        }
+
         /// <summary>
         /// Returns a Node that is a bridge with the specified level. Returns null if none is found.
         /// </summary>
@@ -217,11 +223,6 @@ namespace STV1
                 if (!PathExists(start, n))
                     return false;
             return true;
-        }
-
-        public static bool PathExists(Node u, Node v)
-        {
-            return ShortestPath(u, v) != null;
         }
 
         public void Destroy(Node bridge)
@@ -258,6 +259,20 @@ namespace STV1
                 start = null;
         }
 
+        public int Level(Node u)
+        {
+            int level = u.Capacity / M - 1;
+            if (level >= 0)
+                return level;
+            else
+                return 0;
+        }
+
+        public bool IsBridge(Node u)
+        {
+            return Level(u) >= 1;
+        }
+
         public Node Start
         {
             get { return start; }
@@ -273,11 +288,6 @@ namespace STV1
             get { return 2 + otherNodes.Count; }
         }
 
-        public int Level(Node u)
-        {
-            return u.Capacity / M -1;
-        }
-
         public double ConnectivityDegree
         {
             get
@@ -287,13 +297,27 @@ namespace STV1
                     connections += n.ConnectionsCount;
                 connections += start.ConnectionsCount;
                 connections += exit.ConnectionsCount;
-                return (double)connections / (otherNodes.Count + 2);
+                return (double)connections / Size;
             }
         }
 
-        public bool IsBridge(Node u)
+        /// <summary>
+        /// FOR TESTING ONLY. 
+        /// </summary>
+        public List<Node> AllNodes
         {
-            return Level(u) >= 1;
+            get
+            {
+                List<Node> result = new List<Node>();
+
+                result.Add(start);
+                result.Add(exit);
+
+                foreach (Node n in otherNodes)
+                    result.Add(n);
+
+                return result;
+            }
         }
     }
 }

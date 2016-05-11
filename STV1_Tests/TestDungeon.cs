@@ -12,35 +12,62 @@ namespace STV1_Tests
     [TestClass]
     public class TestDungeon
     {
+        /// <summary>
+        /// Searches through the dungeon recursively and creates a list of all the nodes inside.
+        /// </summary>
+        /// <param name="dungeon">The dungeon to be searched for nodes.</param>
+        /// <returns>A list of all the nodes in the dungeon.</returns>
+        private List<Node> GetAllNodesFromDungeon(Dungeon dungeon)
+        {
+            HashSet<Node> AllNodes = new HashSet<Node>();
+            Queue<Node> toBeSearched = new Queue<Node>();
+            Node next = dungeon.Start;
 
+            do
+            {
+                AllNodes.Add(next);
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+                foreach (Node n in next.ConnectedNodes)
+                    if (!AllNodes.Contains(n))
+                        toBeSearched.Enqueue(n);
+
+                next = toBeSearched.Dequeue();
+            }
+            while (toBeSearched.Count > 0);
+
+            List<Node> result = new List<Node>();
+            foreach (Node n in AllNodes)
+                result.Add(n);
+
+            return result;
+        }
 
         [TestMethod]
-        public void TestShortestPath()
+        public void TestDungeonConstructor()
+        {
+            Dungeon d = new Dungeon(1);
+            Assert.AreNotEqual(d.Start, d.Exit);
+            Assert.IsTrue(d.PathExists(d.Start, d.Exit));
+            Assert.IsTrue(d.AllNodesReachable());
+            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
+
+        }
+
+        [TestMethod]
+        public void TestDungeonConstructor2()
+        {
+            Dungeon d = new Dungeon(2);
+            Assert.AreNotEqual(d.Start, d.Exit);
+            Assert.IsTrue(d.PathExists(d.Start, d.Exit));
+            Assert.IsTrue(d.AllNodesReachable());
+            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
+        }
+
+        [TestMethod]
+        public void TestDungeonShortestPath()
         {
             Dungeon dun = new Dungeon(1);
-            List<Node> path = Dungeon.ShortestPath(dun.Start, dun.Exit);
+            List<Node> path = dun.ShortestPath(dun.Start, dun.Exit);
 
             Assert.AreNotEqual(0, path.Count);
             Assert.AreEqual(dun.Exit, path[path.Count - 1]);
@@ -52,13 +79,13 @@ namespace STV1_Tests
                 nodes[0].Connect(nodes[i]);
             for (int i = 1; i < 5; i++)
             {
-                path = Dungeon.ShortestPath(nodes[0], nodes[i]);
+                path = dun.ShortestPath(nodes[0], nodes[i]);
                 Assert.IsTrue(path[0] == nodes[0]);
                 Assert.IsTrue(path.Count == 2);
             }
             for (int i = 2; i < 5; i++)
                 for (int j = i + 1; j < 5; j++)
-                    Assert.IsTrue(Dungeon.ShortestPath(nodes[i], nodes[j]).Count == 3);
+                    Assert.IsTrue(dun.ShortestPath(nodes[i], nodes[j]).Count == 3);
 
             nodes = new Node[4];
             for (int i = 0; i < 4; i++)
@@ -68,7 +95,7 @@ namespace STV1_Tests
                 nodes[0].Connect(nodes[i]);
                 nodes[3].Connect(nodes[i]);
             }
-            path = Dungeon.ShortestPath(nodes[0], nodes[3]);
+            path = dun.ShortestPath(nodes[0], nodes[3]);
             Assert.IsTrue(path.Count == 3);
             Assert.IsTrue(path[0] == nodes[0]);
             Assert.IsTrue(path[1] == nodes[1] || path[1] == nodes[2]);
@@ -76,53 +103,122 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestDungeonConstructor()
+        public void TestDungeonPathExists()
         {
             Dungeon d = new Dungeon(1);
-            Assert.AreNotEqual(d.Start, d.Exit);
-            Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
-            Assert.IsTrue(d.AllNodesReachable());
-            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
-            
-        }
-
-        [TestMethod]
-        public void TestDungeonConstructor2()
-        {
-            Dungeon d = new Dungeon(2);
-            Assert.AreNotEqual(d.Start, d.Exit);
-            Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
-            Assert.IsTrue(d.AllNodesReachable());
-            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
-        }
-
-        [TestMethod]
-        public void TestPathExists()
-        {
-            Node n1 = new Node(0,0);
-            Node n2 = new Node(0,0);
+            Node n1 = new Node(0, 0);
+            Node n2 = new Node(0, 0);
 
             n1.Connect(n2);
 
-            Assert.IsTrue(Dungeon.PathExists(n1, n2));
+            Assert.IsTrue(d.PathExists(n1, n2));
 
             n1.Disconnect(n2);
 
-            Assert.IsFalse(Dungeon.PathExists(n1, n2));
+            Assert.IsFalse(d.PathExists(n1, n2));
         }
 
         [TestMethod]
-        public void TestDestroy()
+        public void TestDungeonGetBridge()
+        {
+            Dungeon d = new Dungeon(2);
+
+            Node bridge = d.GetBridge(1);
+            Assert.AreEqual(1, d.Level(bridge));
+
+            bridge = d.GetBridge(2);
+            Assert.AreEqual(2, d.Level(bridge));
+        }
+
+        // Not sure how to test this.
+        // TODO: Test this method.
+        [TestMethod]
+        public void TestDungeonAllNodesReachable()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestDungeonDestroy()
         {
             Dungeon d = new Dungeon(1);
 
+            Node bridge = d.GetBridge(1);
 
+            d.Destroy(bridge);
+
+            Assert.AreEqual(0, d.Start.Destroyed);
+            Assert.AreEqual(0, bridge.Destroyed);
         }
 
         [TestMethod]
-        public void TestLevel()
+        public void TestDungeonLevel()
+        {
+            Dungeon d = new Dungeon(1);
+
+            Assert.AreEqual(0, d.Level(d.Start));
+            Assert.AreEqual(0, d.Level(d.Exit));
+
+            Node n = new Node(1, 5);
+            Assert.AreEqual(1, d.Level(n));
+            n = new Node(2, 5);
+            Assert.AreEqual(2, d.Level(n));
+        }
+
+        [TestMethod]
+        public void TestDungeonIsBridge()
+        {
+            Dungeon d = new Dungeon(1);
+
+            Assert.IsFalse(d.IsBridge(d.Start));
+            Assert.IsFalse(d.IsBridge(d.Exit));
+
+            Node n = new Node(1, 5);
+            Assert.IsTrue(d.IsBridge(n));
+        }
+
+        // Not sure how to test this.
+        // TODO: Test this method.
+        [TestMethod]
+        public void TestDungeonStart()
         {
             Assert.IsTrue(false);
+        }
+
+        // Not sure how to test this.
+        // TODO: Test this method.
+        [TestMethod]
+        public void TestDungeonExit()
+        {
+            Assert.IsTrue(false);
+        }
+
+        // Not sure how to test this.
+        // TODO: Test this method.
+        [TestMethod]
+        public void TestDungeonSize()
+        {
+            Dungeon d = new Dungeon(1);
+
+            Assert.AreEqual(GetAllNodesFromDungeon(d).Count, d.Size);
+
+            d = new Dungeon(2);
+
+            Assert.AreEqual(GetAllNodesFromDungeon(d).Count, d.Size);
+
+            d = new Dungeon(3);
+
+            Assert.AreEqual(GetAllNodesFromDungeon(d).Count, d.Size);
+        }
+
+        // Doesn't test actual functionality yet, only checks whether the connectivity degree is 3 or less.
+        // TODO: Add testing of functionality.
+        [TestMethod]
+        public void TestDungeonConnectivityDegree()
+        {
+            Dungeon d = new Dungeon(1);
+
+            Assert.IsTrue(d.ConnectivityDegree <= 3.0);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace STV1_Tests
     public class TestNode
     {
         [TestMethod]
-        public void TestAddConnection()
+        public void TestNodeAddConnection()
         {
             Node n = new Node(0,0);
 
@@ -20,7 +20,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestRemoveConnection()
+        public void TestNodeRemoveConnection()
         {
             Node n = new Node(0,0);
             Node o = new Node(0,0);
@@ -32,7 +32,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestPlayerInNode()
+        public void TestNodePlayerInNode()
         {
             Node n = new Node(0,0);
 
@@ -46,7 +46,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestPackEnterAndLeave()
+        public void TestNodePackEnterAndLeave()
         {
             Node n = new Node(0,0);
 
@@ -63,7 +63,7 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestAdjacent()
+        public void TestNodeAdjacent()
         {
             Node n = new Node(0,0);
             Node o = new Node(0,0);
