@@ -8,7 +8,7 @@ namespace STV1_Tests
     public class TestHealingPotion
     {
         [TestMethod]
-        public void TestUse()
+        public void TestHealingPotionUse()
         {
             Player p = new Player(new Node(0,0), 15, 5, null);
             HealingPotion hp1 = new HealingPotion();

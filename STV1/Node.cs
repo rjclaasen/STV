@@ -8,6 +8,9 @@ namespace STV1
 {
     public class Node
     {
+        private static int idCounter = 0;
+        private int id;
+
         private const int MAXCONNECTIONS = 4;
 
         private List<Pack> packsInNode;
@@ -20,8 +23,10 @@ namespace STV1
         /// <summary>
         /// Creates a new node.
         /// </summary>
+        /// <param name="level">TODO: Add documentation.</param>
+        /// <param name="M">TODO: Add documentation.</param>
         /// <param name="capacity">Optional parameter to set the capacity directly, instead of using the formula.</param>
-        public Node(int level, int M, int capacity = -1)
+        public Node(int level = 0, int M = 0, int capacity = -1)
         {
             this.level = level;
             this.capacity = M * (level + 1);
@@ -29,6 +34,9 @@ namespace STV1
             connectedNodes = new List<Node>();
             if (capacity != -1)
                 this.capacity = capacity;
+
+            id = idCounter;
+            idCounter++;
         }
 
         public bool Connect(Node n)
@@ -153,6 +161,11 @@ namespace STV1
         public bool Destroyed
         {
             get { return destroyed; }
+        }
+
+        public int ID
+        {
+            get { return id; }
         }
     }
 }
