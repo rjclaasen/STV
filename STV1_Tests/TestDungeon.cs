@@ -82,7 +82,7 @@ namespace STV1_Tests
             Assert.AreNotEqual(d.Start, d.Exit);
             Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
             Assert.IsTrue(d.AllNodesReachable());
-            //Make test regarding connectivity
+            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
             
         }
 
@@ -93,6 +93,7 @@ namespace STV1_Tests
             Assert.AreNotEqual(d.Start, d.Exit);
             Assert.IsTrue(Dungeon.PathExists(d.Start, d.Exit));
             Assert.IsTrue(d.AllNodesReachable());
+            Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
         }
 
         [TestMethod]

@@ -34,11 +34,13 @@ namespace STV1
                     m = new Monster(location);
                 monsters.Add(m);
             }
+
+            location.AddPack(this);
         }
 
         public bool Move(Node target)
         {
-            if (Location.Adjacent(target) && Location.PackFits(this))
+            if (Location.Adjacent(target) && target.PackFits(this))
             {
                 target.PackEnters(this);
                 Location.PackLeaves(this);
