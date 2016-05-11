@@ -13,7 +13,7 @@ namespace STV1_Tests
     public class TestDungeon
     {
 
-       
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -39,11 +39,40 @@ namespace STV1_Tests
         [TestMethod]
         public void TestShortestPath()
         {
-            Dungeon d = new Dungeon(1);
-            List<Node> path = Dungeon.ShortestPath(d.Start, d.Exit);
+            Dungeon dun = new Dungeon(1);
+            List<Node> path = Dungeon.ShortestPath(dun.Start, dun.Exit);
 
             Assert.AreNotEqual(0, path.Count);
-            
+            Assert.AreEqual(dun.Exit, path[path.Count - 1]);
+
+            Node[] nodes = new Node[5];
+            for (int i = 0; i < 5; i++)
+                nodes[i] = new Node(0, 0);
+            for (int i = 1; i < 5; i++) //Make a cross
+                nodes[0].Connect(nodes[i]);
+            for (int i = 1; i < 5; i++)
+            {
+                path = Dungeon.ShortestPath(nodes[0], nodes[i]);
+                Assert.IsTrue(path[0] == nodes[0]);
+                Assert.IsTrue(path.Count == 2);
+            }
+            for (int i = 2; i < 5; i++)
+                for (int j = i + 1; j < 5; j++)
+                    Assert.IsTrue(Dungeon.ShortestPath(nodes[i], nodes[j]).Count == 3);
+
+            nodes = new Node[4];
+            for (int i = 0; i < 4; i++)
+                nodes[i] = new Node(0, 0);
+            for (int i = 1; i < 3; i++) // Make a diamond
+            {
+                nodes[0].Connect(nodes[i]);
+                nodes[3].Connect(nodes[i]);
+            }
+            path = Dungeon.ShortestPath(nodes[0], nodes[3]);
+            Assert.IsTrue(path.Count == 3);
+            Assert.IsTrue(path[0] == nodes[0]);
+            Assert.IsTrue(path[1] == nodes[1] || path[1] == nodes[2]);
+            Assert.IsTrue(path[2] == nodes[3]);
         }
 
         [TestMethod]

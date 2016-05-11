@@ -14,7 +14,6 @@ namespace STV1
         private Player playerInNode;
         private List<Node> connectedNodes;
         private int capacity;
-        private Node precedingNode;
         private int level;
         /// <summary>
         /// Creates a new node.

@@ -11,7 +11,7 @@ namespace STV1
         private Node start;
         private List<Node> otherNodes;
         private Node exit;
-        private int M;
+        private const int M = 5;
         private const int NODESPERZONE = 10;
         private const int MAXCONNECTIVITY = 3;
 
@@ -67,6 +67,8 @@ namespace STV1
             exit.setCapacity(M, -1);
             for (int i = 1; i < (difficulty + 1) * NODESPERZONE-1; i++)
                 otherNodes.Add(dungeon[i]);
+
+
         }
 
         /// <summary>
@@ -122,6 +124,7 @@ namespace STV1
                 return null;
 
             // TODO: Test method
+            path.Reverse();
             return path;
         }
 

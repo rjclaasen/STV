@@ -12,7 +12,14 @@ namespace STV1
         private Player player;
         private List<Pack> packs;
         private List<Item> items;
+        private int difficulty;
 
+        public Game()
+        {
+            difficulty = 1;
+            dungeon = new Dungeon(difficulty);
+            player = new Player(dungeon.Start, 25, 5);
+        }
         public bool Save(string filename)
         {
             return true;
@@ -27,11 +34,14 @@ namespace STV1
         {
             if (dungeon == null)
             {
-
+                dungeon = new Dungeon(1);
+                difficulty = 1;
+                
             }
             else
             {
-
+                difficulty++;
+                dungeon = new Dungeon(difficulty);
             }
         }
     }
