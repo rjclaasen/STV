@@ -72,9 +72,10 @@ namespace STV1
 
         public void Update()
         {
+            Node location = monsters[0].Location;
             monsters.RemoveAll(x => x.IsDead());
             if (monsters.Count == 0)
-                Location.PacksInNode.Remove(this);
+                location.PacksInNode.Remove(this);
         }
 
         public Node Location
@@ -84,7 +85,11 @@ namespace STV1
 
         public Monster Monster
         {
-            get { return monsters[0]; }
+            get
+            {
+                if (monsters.Count == 0) return null;
+                return monsters[0];
+            }
         }
 
         public List<Monster> Monsters
@@ -99,7 +104,7 @@ namespace STV1
 
         public bool Dead
         {
-            get { Update(); return monsters.Count == 0; }
+            get { if (monsters.Count > 0) { Update(); } return monsters.Count == 0; }
         }
     }
 }

@@ -12,11 +12,11 @@ namespace STV1
         private List<Node> otherNodes;
         private Node exit;
         private const int M = 5;
-        private const int NODESPERZONE = 10;
-        private const int MAXCONNECTIVITY = 3;
-        private const int TOTALMONSTERS = 50;
-        private const int TOTALPACKS = 5;
-        private const int ITEMSPERZONE = 10;
+        private const int NODES_PER_ZONE = 10;
+        private const int MAX_CONNECTIVITY = 3;
+        private const int TOTAL_MONSTERS = 50;
+        private const int TOTAL_PACKS = 5;
+        private const int ITEMS_PER_ZONE = 10;
         private int packSize;
 
         // Temporary constructor. Doesn't actually create a proper dungeon.
@@ -26,9 +26,9 @@ namespace STV1
             Random rnd = new Random();
             start = new Node(0,M,0);
             otherNodes = new List<Node>();
-            Node[] dungeon = new Node[(difficulty + 1) * NODESPERZONE + difficulty + 2];
+            Node[] dungeon = new Node[(difficulty + 1) * NODES_PER_ZONE + difficulty + 2];
             dungeon[0] = start;
-            dungeon[(difficulty + 1) * NODESPERZONE + 1] = exit;
+            dungeon[(difficulty + 1) * NODES_PER_ZONE + 1] = exit;
             /* Start = 0
             * Zone k = 1 + (k-1) * NODESPERZONE tot (k * NODESPERZONE)
             * Bridge of bridge level j = j * NODESPERZONE
@@ -38,7 +38,7 @@ namespace STV1
             //create the zones
             for (int k = 1; k < difficulty + 2; k++)
             {
-                int zoneStart = (k - 1) * NODESPERZONE + k;
+                int zoneStart = (k - 1) * NODES_PER_ZONE + k;
                 
                 //Connect the first two nodes with the last node of previous zone
                 dungeon[zoneStart] = new Node(0,M);
@@ -47,18 +47,18 @@ namespace STV1
                 dungeon[zoneStart + 1].Connect(dungeon[zoneStart - 1]);
 
                 //Create the nodes in the zone
-                for (int i = 2; i < NODESPERZONE; i++)
+                for (int i = 2; i < NODES_PER_ZONE; i++)
                 {
                     Node x = new Node(0,M);
                     dungeon[zoneStart + i] = x;
                     
                     //Choose two nodes to connect to
                     int a = zoneStart + rnd.Next(0,i);
-                    while(dungeon[a].ConnectionsCount > MAXCONNECTIVITY)
+                    while(dungeon[a].ConnectionsCount > MAX_CONNECTIVITY)
                         a = zoneStart + rnd.Next(0, i);
                     x.Connect(dungeon[a]);
                     int b = a;
-                    while (b == a || dungeon[b].ConnectionsCount > MAXCONNECTIVITY)
+                    while (b == a || dungeon[b].ConnectionsCount > MAX_CONNECTIVITY)
                         b = zoneStart + rnd.Next(0, i);
                     x.Connect(dungeon[b]);
                     if(dungeon[b].Adjacent(dungeon[a]))
@@ -68,9 +68,9 @@ namespace STV1
                 }
                 //Connect the last node of the zone (the bridge) to two earlier nodes
                 Node bridge = new Node(k,M);
-                dungeon[zoneStart + NODESPERZONE] = bridge;
-                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 1]);
-                bridge.Connect(dungeon[zoneStart + NODESPERZONE - 2]);
+                dungeon[zoneStart + NODES_PER_ZONE] = bridge;
+                bridge.Connect(dungeon[zoneStart + NODES_PER_ZONE - 1]);
+                bridge.Connect(dungeon[zoneStart + NODES_PER_ZONE - 2]);
             }
 
             exit = dungeon[dungeon.Length - 1];
@@ -91,12 +91,12 @@ namespace STV1
             }
 
             // Add monsters
-            packSize = TOTALMONSTERS / TOTALPACKS;
+            packSize = TOTAL_MONSTERS / TOTAL_PACKS;
             for(int k = 1; k < difficulty + 2; k++)
             {
-                int zoneStart = (k - 1) * NODESPERZONE + 1;
-                int zoneEnd = k * NODESPERZONE;
-                int mobs = 2 * k * TOTALMONSTERS / ((difficulty + 2) * (difficulty + 1));
+                int zoneStart = (k - 1) * NODES_PER_ZONE + 1;
+                int zoneEnd = k * NODES_PER_ZONE;
+                int mobs = 2 * k * TOTAL_MONSTERS / ((difficulty + 2) * (difficulty + 1));
                 int actualmobs = 0;
                 while(actualmobs < mobs)
                 {
@@ -123,10 +123,10 @@ namespace STV1
             // Add items
             for(int k = 1; k < difficulty + 2; k++)
             {
-                int zoneStart = (k - 1) * NODESPERZONE + 1;
-                int zoneEnd = k * NODESPERZONE;
+                int zoneStart = (k - 1) * NODES_PER_ZONE + 1;
+                int zoneEnd = k * NODES_PER_ZONE;
 
-                for (int i = 0; i < ITEMSPERZONE; i++)
+                for (int i = 0; i < ITEMS_PER_ZONE; i++)
                 {
                     int x = rnd.Next(zoneStart + i, zoneEnd + 1);
                     float j = rnd.Next();
