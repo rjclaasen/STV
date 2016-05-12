@@ -12,36 +12,6 @@ namespace STV1_Tests
     [TestClass]
     public class TestDungeon
     {
-        /// <summary>
-        /// Searches through the dungeon recursively and creates a list of all the nodes inside.
-        /// </summary>
-        /// <param name="dungeon">The dungeon to be searched for nodes.</param>
-        /// <returns>A list of all the nodes in the dungeon.</returns>
-        private List<Node> GetAllNodesFromDungeon(Dungeon dungeon)
-        {
-            HashSet<Node> AllNodes = new HashSet<Node>();
-            Queue<Node> toBeSearched = new Queue<Node>();
-            Node next = dungeon.Start;
-
-            do
-            {
-                AllNodes.Add(next);
-
-                foreach (Node n in next.ConnectedNodes)
-                    if (!AllNodes.Contains(n))
-                        toBeSearched.Enqueue(n);
-
-                next = toBeSearched.Dequeue();
-            }
-            while (toBeSearched.Count > 0);
-
-            List<Node> result = new List<Node>();
-            foreach (Node n in AllNodes)
-                result.Add(n);
-
-            return result;
-        }
-
         [TestMethod]
         public void TestDungeonConstructor()
         {
@@ -130,12 +100,24 @@ namespace STV1_Tests
             Assert.AreEqual(2, d.Level(bridge));
         }
 
-        // Not sure how to test this.
-        // TODO: Test this method.
         [TestMethod]
         public void TestDungeonAllNodesReachable()
         {
-            Assert.IsTrue(false);
+            Dungeon d = new Dungeon(1);
+            bool allNodesReachable = true;
+
+            List<Node> nodes = GetAllNodesFromDungeon(d);
+
+            foreach (Node n in nodes)
+            {
+                if (!d.PathExists(d.Start, n))
+                {
+                    allNodesReachable = false;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(allNodesReachable);
         }
 
         [TestMethod]
@@ -144,11 +126,13 @@ namespace STV1_Tests
             Dungeon d = new Dungeon(1);
 
             Node bridge = d.GetBridge(1);
+            Node start = d.Start;
 
             d.Destroy(bridge);
 
-            Assert.AreEqual(0, d.Start.Destroyed);
-            Assert.AreEqual(0, bridge.Destroyed);
+            Assert.IsTrue(start.Destroyed);
+            Assert.IsNull(d.Start);
+            Assert.IsTrue(bridge.Destroyed);
         }
 
         [TestMethod]
@@ -177,24 +161,6 @@ namespace STV1_Tests
             Assert.IsTrue(d.IsBridge(n));
         }
 
-        // Not sure how to test this.
-        // TODO: Test this method.
-        [TestMethod]
-        public void TestDungeonStart()
-        {
-            Assert.IsTrue(false);
-        }
-
-        // Not sure how to test this.
-        // TODO: Test this method.
-        [TestMethod]
-        public void TestDungeonExit()
-        {
-            Assert.IsTrue(false);
-        }
-
-        // Not sure how to test this.
-        // TODO: Test this method.
         [TestMethod]
         public void TestDungeonSize()
         {
@@ -211,14 +177,54 @@ namespace STV1_Tests
             Assert.AreEqual(GetAllNodesFromDungeon(d).Count, d.Size);
         }
 
-        // Doesn't test actual functionality yet, only checks whether the connectivity degree is 3 or less.
-        // TODO: Add testing of functionality.
         [TestMethod]
         public void TestDungeonConnectivityDegree()
         {
             Dungeon d = new Dungeon(1);
 
             Assert.IsTrue(d.ConnectivityDegree <= 3.0);
+
+            List<Node> allNodes = GetAllNodesFromDungeon(d);
+
+            int connections = 0;
+            foreach(Node n in allNodes)
+            {
+                connections += n.ConnectionsCount;
+            }
+            double connectivity = (double)connections / d.Size;
+
+            Assert.AreEqual(connectivity, d.ConnectivityDegree);
+        }
+
+
+        /// <summary>
+        /// Searches through the dungeon recursively and creates a list of all the nodes inside.
+        /// </summary>
+        /// <param name="dungeon">The dungeon to be searched for nodes.</param>
+        /// <returns>A list of all the nodes in the dungeon.</returns>
+        private List<Node> GetAllNodesFromDungeon(Dungeon dungeon)
+        {
+            HashSet<Node> AllNodes = new HashSet<Node>();
+            Queue<Node> toBeSearched = new Queue<Node>();
+            Node next = dungeon.Start;
+
+            do
+            {
+                AllNodes.Add(next);
+
+                foreach (Node n in next.ConnectedNodes)
+                    if (!AllNodes.Contains(n))
+                        toBeSearched.Enqueue(n);
+
+                next = toBeSearched.Dequeue();
+            }
+            while (toBeSearched.Count > 0);
+
+            List<Node> result = new List<Node>();
+            foreach (Node n in AllNodes)
+                result.Add(n);
+
+            return result;
         }
     }
 }

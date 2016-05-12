@@ -60,8 +60,6 @@ namespace STV1
             return currentCommand;
         }
 
-        protected override void Die() { }
-
         public override float HitPoints
         {
             get { return base.HitPoints; }

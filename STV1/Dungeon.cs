@@ -300,24 +300,5 @@ namespace STV1
                 return (double)connections / Size;
             }
         }
-
-        /// <summary>
-        /// FOR TESTING ONLY. 
-        /// </summary>
-        public List<Node> AllNodes
-        {
-            get
-            {
-                List<Node> result = new List<Node>();
-
-                result.Add(start);
-                result.Add(exit);
-
-                foreach (Node n in otherNodes)
-                    result.Add(n);
-
-                return result;
-            }
-        }
     }
 }

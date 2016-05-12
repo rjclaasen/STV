@@ -20,15 +20,23 @@ namespace STV1
             dungeon = new Dungeon(difficulty);
             player = new Player(dungeon.Start, 25, 5, dungeon, this);
         }
+
+        // Out of the scope of this project
+        /*
         public bool Save(string filename)
         {
             return true;
-        }
+        } 
+        */
 
+        
+        // Out of the scope of this project
+        /*
         public void Load(string filename)
         {
 
-        }
+        } 
+        */
 
         public Dungeon NextDungeon()
         {

@@ -51,6 +51,31 @@ namespace STV1
             return false;
         }
 
+        public bool Retreat(Player player)
+        {
+            float cumulativeHealth = 0;
+            foreach (Monster m in monsters)
+                cumulativeHealth = m.HitPoints;
+            if (player.HitPoints < cumulativeHealth)
+                foreach (Node n in Location.ConnectedNodes)
+                    if (Move(n))
+                        return true;
+            return false;
+        }
+
+        public void Attack(Creature c)
+        {
+            foreach (Monster m in monsters)
+                m.Attack(c);
+        }
+
+        public void Update()
+        {
+            monsters.RemoveAll(x => x.IsDead());
+            if (monsters.Count == 0)
+                Location.PacksInNode.Remove(this);
+        }
+
         public Node Location
         {
             get { return monsters[0].Location; }
@@ -66,38 +91,14 @@ namespace STV1
             get { return monsters; }
         }
 
-        public bool Retreat(Player player)
-        {
-            float cumulativeHealth = 0;
-            foreach (Monster m in monsters)
-                cumulativeHealth = m.HitPoints;
-            if (player.HitPoints < cumulativeHealth)
-                foreach (Node n in Location.ConnectedNodes)
-                    if (Move(n))
-                        return true;
-            return false;
-        }
-
         public int Size
         {
             get { return monsters.Count; }
         }
 
-        public void Attack(Creature c)
-        {
-            foreach (Monster m in monsters)
-                m.Attack(c);
-        }
-
-        public bool isDead
+        public bool Dead
         {
             get { Update(); return monsters.Count == 0; }
-        }
-        public void Update()
-        {
-            monsters.RemoveAll(x => x.IsDead());
-            if (monsters.Count == 0)
-                Location.PacksInNode.Remove(this);
         }
     }
 }

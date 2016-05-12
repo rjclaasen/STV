@@ -101,6 +101,7 @@ namespace STV1
         {
             item.Use(playerInNode);
         }
+
         public void AddItem(Item item)
         {
             items.Add(item);
@@ -110,7 +111,6 @@ namespace STV1
         {
             return connectedNodes.Contains(other);
         }
-
 
         public bool PackFits(Pack pack)
         {
@@ -212,7 +212,7 @@ namespace STV1
             pack.Attack(player);
 
             pack.Update();
-            if (pack.isDead || player.IsDead())
+            if (pack.Dead || player.IsDead())
                 return false;
             Command g = player.GetCommand();
             if (g.retreat)

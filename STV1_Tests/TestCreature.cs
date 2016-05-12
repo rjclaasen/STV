@@ -11,7 +11,7 @@ namespace STV1_Tests
         public void TestCreatureConstructor()
         {
             float creatureHealth = 10;
-            Node node = new Node(0,0,0);
+            Node node = new Node(0, 0, 0);
             float attackRating = 2;
             MockCreature m = new MockCreature(node, creatureHealth, attackRating);
 
@@ -21,7 +21,21 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestPlayerAttack()
+        public void TestCreatureMove()
+        {
+            Node oldNode = new Node(0, 0, 0);
+            MockCreature m = new MockCreature(oldNode);
+
+            Node newNode = new Node(0, 0, 0);
+
+            m.Move(newNode);
+
+            Assert.AreNotEqual(oldNode, m.Location);
+            Assert.AreEqual(newNode, m.Location);
+        }
+
+        [TestMethod]
+        public void TestCreatureAttack()
         {
             MockCreature m1 = new MockCreature(null);
             MockCreature m2 = new MockCreature(null);
@@ -34,19 +48,7 @@ namespace STV1_Tests
             Assert.AreEqual(targetHealth, m2.HitPoints);
         }
 
-        [TestMethod]
-        public void TestCreatureMove()
-        {
-            Node oldNode = new Node(0,0,0);
-            MockCreature m = new MockCreature(oldNode);
 
-            Node newNode = new Node(0,0,0);
-
-            m.Move(newNode);
-
-            Assert.AreNotEqual(oldNode, m.Location);
-            Assert.AreEqual(newNode, m.Location);
-        }
 
         [TestMethod]
         public void TestCreatureHitPoints()
@@ -59,6 +61,24 @@ namespace STV1_Tests
 
             m.HitPoints = 0;
             Assert.AreEqual(true, m.IsDead());
+        }
+
+        [TestMethod]
+        public void TestCreatureLocation()
+        {
+            Node n = new Node();
+            MockCreature c = new MockCreature(null);
+
+            c.Location = n;
+            Assert.AreEqual(n, c.Location);
+        }
+
+        [TestMethod]
+        public void TestCreatureAttackRating()
+        {
+            MockCreature c = new MockCreature(null, 3, 5);
+
+            Assert.AreEqual(5, c.AttackRating);
         }
     }
 }

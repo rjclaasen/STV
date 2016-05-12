@@ -52,9 +52,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TestCommand.cs" />
     <Compile Include="TestCreature.cs" />
     <Compile Include="MockCreature.cs" />
     <Compile Include="TestDungeon.cs" />
+    <Compile Include="TestGame.cs" />
     <Compile Include="TestHealingPotion.cs" />
     <Compile Include="TestMonster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

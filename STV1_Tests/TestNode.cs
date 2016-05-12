@@ -8,7 +8,13 @@ namespace STV1_Tests
     public class TestNode
     {
         [TestMethod]
-        public void TestNodeAddConnection()
+        public void TestNodeConstructor()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeConnect()
         {
             Node n = new Node(0,0);
 
@@ -17,13 +23,23 @@ namespace STV1_Tests
             Assert.IsTrue(n.Connect(o));
             Assert.AreEqual(1, n.ConnectionsCount);
             Assert.AreEqual(1, o.ConnectionsCount);
+
+            Node a = new Node();
+            Node b = new Node();
+            Node c = new Node();
+            Node d = new Node();
+
+            Assert.IsTrue(n.Connect(a));
+            Assert.IsTrue(n.Connect(b));
+            Assert.IsTrue(n.Connect(c));
+            Assert.IsFalse(n.Connect(d));
         }
 
         [TestMethod]
-        public void TestNodeRemoveConnection()
+        public void TestNodeDisconnect()
         {
-            Node n = new Node(0,0);
-            Node o = new Node(0,0);
+            Node n = new Node(0, 0);
+            Node o = new Node(0, 0);
 
             n.Connect(o);
             n.Disconnect(o);
@@ -32,41 +48,63 @@ namespace STV1_Tests
         }
 
         [TestMethod]
-        public void TestNodePlayerInNode()
+        public void TestNodeDestroy()
         {
-            Node n = new Node(0,0);
-
-            Player p = new Player(new Node(0,0), 10, 5, null, null);
-
-            Assert.AreEqual(false, n.PlayerInNode());
-            n.PlayerEnters(p);
-            Assert.AreEqual(true, n.PlayerInNode());
-            n.PlayerLeaves();
-            Assert.AreEqual(false, n.PlayerInNode());
+            Assert.IsTrue(false);
         }
 
         [TestMethod]
-        public void TestNodePackEnterAndLeave()
+        public void TestNodePackEnters()
         {
-            Node n = new Node(0,0);
+            Node n = new Node();
 
-            Pack p1 = new Pack(1, new Node(0,0));
-            Pack p2 = new Pack(2, new Node(0,0));
+            Pack p = new Pack(1, null);
+
+            n.PackEnters(p);
+            Assert.IsTrue(n.PacksInNode.Contains(p));
+        }
+
+        [TestMethod]
+        public void TestNodePackLeaves()
+        {
+            Node n = new Node(0, 0);
+
+            Pack p1 = new Pack(1, null);
 
             n.PackEnters(p1);
-            Assert.IsTrue(n.PacksInNode.Contains(p1));
-            n.PackEnters(p2);
             n.PackLeaves(p1);
             Assert.IsFalse(n.PacksInNode.Contains(p1));
-            n.PackLeaves(p2);
-            Assert.AreEqual(0, n.PacksInNode.Count);
+        }
+
+        [TestMethod]
+        public void TestNodePlayerEnters()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodePlayerLeaves()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeUseItem()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeAddItem()
+        {
+            Assert.IsTrue(false);
         }
 
         [TestMethod]
         public void TestNodeAdjacent()
         {
-            Node n = new Node(0,0);
-            Node o = new Node(0,0);
+            Node n = new Node(0, 0);
+            Node o = new Node(0, 0);
 
             n.Connect(o);
 
@@ -77,6 +115,84 @@ namespace STV1_Tests
 
             Assert.IsFalse(n.Adjacent(o));
             Assert.IsFalse(o.Adjacent(n));
+        }
+
+        [TestMethod]
+        public void TestPackFits()
+        {
+            Node moveTarget = new Node(1, 5, 5);
+            Node moveSource = new Node(1, 5, 30);
+
+            moveTarget.Connect(moveSource);
+
+            Pack p3 = new Pack(3, moveSource);
+            Pack p4 = new Pack(4, moveSource);
+            Pack p5 = new Pack(5, moveSource);
+            Pack p6 = new Pack(6, moveSource);
+
+            Assert.IsTrue(moveTarget.PackFits(p5));
+            Assert.IsFalse(moveTarget.PackFits(p6));
+
+            p3.Move(moveTarget);
+
+            Assert.IsFalse(moveTarget.PackFits(p4));
+        }
+
+        [TestMethod]
+        public void TestNodePlayerInNode()
+        {
+            Node n = new Node(0,0);
+
+            Player p = new Player(new Node(0,0), 10, 5, null, null);
+
+            Assert.IsFalse(n.PlayerInNode());
+            n.PlayerEnters(p);
+            Assert.IsTrue(n.PlayerInNode());
+            n.PlayerLeaves();
+            Assert.IsFalse(n.PlayerInNode());
+        }
+
+        [TestMethod]
+        public void TestNodeConnectionsCount()
+        {
+            Node n = new Node();
+            Node o = new Node();
+
+            Assert.AreEqual(0, n.ConnectionsCount);
+
+            n.ConnectedNodes.Add(o);
+
+            Assert.AreEqual(1, n.ConnectionsCount);
+        }
+
+        [TestMethod]
+        public void TestNodeConnectionsSetCapacity()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeAddPack()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeCheckForCombat()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeDoCombat()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestNodeDoCombatRound()
+        {
+            Assert.IsTrue(false);
         }
     }
 }

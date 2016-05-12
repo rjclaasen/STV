@@ -19,5 +19,47 @@ namespace STV1_Tests
             Assert.AreEqual(hp,p.HitPoints);
             Assert.AreEqual(ar,p.AttackRating);
         }
+
+        [TestMethod]
+        public void TestPlayerMove()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerAttack()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerPickUp()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerGetCommand()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerHitPoints()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerUseTimeCrystal()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPlayerUseHealingPotion()
+        {
+            Assert.IsTrue(false);
+        }
     }
 }

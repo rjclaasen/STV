@@ -34,6 +34,12 @@ namespace STV1_Tests
         }
 
         [TestMethod]
+        public void TestPackRetreat()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
         public void TestPackAttack()
         {
             Pack p = new Pack(3, new Node(0,0), 1, 1);
@@ -41,6 +47,30 @@ namespace STV1_Tests
 
             p.Attack(c);
             Assert.AreEqual(2, c.HitPoints);
+        }
+
+        [TestMethod]
+        public void TestPackUpdate()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPackLocation()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPackSize()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void TestPackDead()
+        {
+            Assert.IsTrue(false);
         }
     }
 }

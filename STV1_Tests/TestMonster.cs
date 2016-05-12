@@ -7,6 +7,10 @@ namespace STV1_Tests
     [TestClass]
     public class TestMonster
     {
-
+        [TestMethod]
+        public void TestMonsterConstructor()
+        {
+            Assert.IsTrue(false);
+        }
     }
 }
