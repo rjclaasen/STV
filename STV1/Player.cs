@@ -10,7 +10,7 @@ namespace STV1
     {
         private float maxHitPoints = float.MaxValue;
         private int killPoints;
-        private List<Item> bag;
+        private List<Item> bag = new List<Item>();
         Queue<Command> commands;
         private Dungeon dungeon;
         private Game game;
@@ -27,7 +27,7 @@ namespace STV1
         {
             maxHitPoints = hitPoints;
             HitPoints = hitPoints;
-            bag = new List<Item>();
+            //bag = new List<Item>();
             commands = new Queue<Command>();
             this.dungeon = dungeon;
             this.game = game;
