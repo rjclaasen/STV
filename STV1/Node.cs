@@ -174,7 +174,7 @@ namespace STV1
 
         public void CheckForCombat()
         {
-            while (!playerInNode.IsDead() && playerInNode != null && packsInNode.Count > 0)
+            while (playerInNode != null && !playerInNode.IsDead() && packsInNode.Count > 0)
                 doCombat(playerInNode);
 
         }
