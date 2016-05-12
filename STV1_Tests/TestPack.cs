@@ -12,9 +12,11 @@ namespace STV1_Tests
         {
             Node n = new Node(0,0);
             Pack p = new Pack(5, n);
+            Pack p2 = new Pack(5, n, 10);
 
             Assert.AreEqual(5, p.Size);
             Assert.AreEqual(n, p.Location);
+            Assert.AreEqual(10, p2.Monster.HitPoints);
         }
 
         [TestMethod]
@@ -31,6 +33,8 @@ namespace STV1_Tests
             p.Move(n2);
 
             Assert.AreEqual(n2, p.Location);
+
+            Assert.IsFalse(p.Move(new Node()));
         }
 
         [TestMethod]

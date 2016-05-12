@@ -98,6 +98,9 @@ namespace STV1_Tests
 
             bridge = d.GetBridge(2);
             Assert.AreEqual(2, d.Level(bridge));
+
+            bridge = d.GetBridge(3);
+            Assert.IsNull(bridge);
         }
 
         [TestMethod]

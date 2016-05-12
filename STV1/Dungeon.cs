@@ -217,6 +217,11 @@ namespace STV1
             return null;
         }
 
+        /// <summary>
+        /// Checks whether all nodes in otherNodes are reachable from the start.
+        /// Only used for testing purposes.
+        /// </summary>
+        /// <returns>Whether all otherNodes are reachable from the start.</returns>
         public bool AllNodesReachable()
         {
             foreach (Node n in otherNodes)

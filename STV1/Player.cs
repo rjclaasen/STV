@@ -29,13 +29,15 @@ namespace STV1
             HitPoints = hitPoints;
             this.dungeon = dungeon;
             this.game = game;
-            location.PlayerEnters(this);
         }
 
         public override void Move(Node target)
         {
             if (target == dungeon.Exit)
-            { game.NextDungeon(); }
+            {
+                dungeon = game.NextDungeon();
+                return;
+            }
             Location.PlayerLeaves();
             target.PlayerEnters(this);
             base.Move(target);
@@ -96,9 +98,30 @@ namespace STV1
             return false;
         }
 
+        public override Node Location
+        {
+            get
+            {
+                return base.Location;
+            }
+            set
+            {
+                if(Location != null)
+                    Location.PlayerLeaves();
+                base.Location = value;
+                if(value != null)
+                    Location.PlayerEnters(this);
+            }
+        }
+
         public Dungeon Dungeon
         {
             get { return dungeon; }
+        }
+
+        public int KillPoints
+        {
+            get { return killPoints; }
         }
     }
 }

@@ -12,24 +12,6 @@ namespace STV1_Tests
             Assert.IsTrue(false);
         }
 
-        // Out of the scope of this project
-        /*
-        [TestMethod]
-        public void TestGameSave()
-        {
-            Assert.IsTrue(false);
-        } 
-        */
-
-        // Out of the scope of this project
-        /*
-        [TestMethod]
-        public void TestGameLoad()
-        {
-            Assert.IsTrue(true);
-        } 
-        */
-
         [TestMethod]
         public void TestGameNextDungeon()
         {

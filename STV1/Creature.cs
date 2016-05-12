@@ -52,7 +52,7 @@ namespace STV1
             }
         }
 
-        public Node Location
+        public virtual Node Location
         {
             get { return location; }
             set { location = value; }

@@ -23,13 +23,29 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPlayerMove()
         {
-            Assert.IsTrue(false);
+            Game game = new Game();
+            Node node = new Node();
+            Dungeon dungeon = game.Dungeon;
+
+            game.Player.Move(node);
+
+            Assert.IsFalse(dungeon.Start.PlayerInNode());
+            Assert.IsTrue(node.PlayerInNode());
+
+            game.Player.Move(dungeon.Exit);
+
+            Assert.AreNotEqual(dungeon, game.Player.Dungeon);
         }
 
         [TestMethod]
         public void TestPlayerAttack()
         {
-            Assert.IsTrue(false);
+            MockCreature c = new MockCreature();
+            Player p = new Player(null, 10, 5, null, null);
+
+            p.Attack(c);
+
+            Assert.AreEqual(1, p.KillPoints);
         }
 
         [TestMethod]

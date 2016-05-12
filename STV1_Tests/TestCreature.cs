@@ -72,13 +72,5 @@ namespace STV1_Tests
             c.Location = n;
             Assert.AreEqual(n, c.Location);
         }
-
-        [TestMethod]
-        public void TestCreatureAttackRating()
-        {
-            MockCreature c = new MockCreature(null, 3, 5);
-
-            Assert.AreEqual(5, c.AttackRating);
-        }
     }
 }

@@ -9,7 +9,7 @@ namespace STV1_Tests
 {
     class MockCreature : Creature
     {
-        public MockCreature(Node location, float hitPoints = 2, float attackRating = 1)
+        public MockCreature(Node location = null, float hitPoints = 2, float attackRating = 1)
             : base(location, hitPoints, attackRating) { }
 
         protected override void Die()

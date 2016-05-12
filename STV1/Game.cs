@@ -16,27 +16,9 @@ namespace STV1
 
         public Game()
         {
-            difficulty = 1;
-            dungeon = new Dungeon(difficulty);
+            dungeon = NextDungeon();
             player = new Player(dungeon.Start, 25, 5, dungeon, this);
         }
-
-        // Out of the scope of this project
-        /*
-        public bool Save(string filename)
-        {
-            return true;
-        } 
-        */
-
-        
-        // Out of the scope of this project
-        /*
-        public void Load(string filename)
-        {
-
-        } 
-        */
 
         public Dungeon NextDungeon()
         {
@@ -44,8 +26,8 @@ namespace STV1
             {
                 dungeon = new Dungeon(1);
                 difficulty = 1;
-                player.Location = dungeon.Start;
-                
+                if (player != null)
+                    player.Location = dungeon.Start;
             }
             else
             {
@@ -54,6 +36,16 @@ namespace STV1
                 player.Location = dungeon.Start;
             }
             return dungeon;
+        }
+
+        public Player Player
+        {
+            get { return player; }
+        }
+
+        public Dungeon Dungeon
+        {
+            get { return dungeon; }
         }
     }
 }
