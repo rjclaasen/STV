@@ -31,9 +31,37 @@ namespace STV1_Tests
         public void TestTimeCrystalUseCombat()
         {
             Node contested = new Node(1, 1, 10);
+            Node n = new Node(1, 1, 10);
+            n.Connect(contested);
+            n.AddItem(new TimeCrystal());
+
             Pack pack = new Pack(10, contested, 10, 5);
-            Player player = new Player(contested, 150, 10, null, null);
-            Assert.IsFalse(true);
+            Player player = new Player(n, 150, 10, null, null);
+            
+            Command useTimeCrystal = new Command(true, false, false, false);
+            player.SetCommand(useTimeCrystal);
+            player.Move(contested);
+            
+
+            Assert.AreEqual(0, contested.PacksInNode.Count);
+
+            contested = new Node(1, 1, 10);
+            n = new Node(1, 1, 10);
+            n.Connect(contested);
+            n.AddItem(new TimeCrystal());
+
+            pack = new Pack(10, contested, 10, 5);
+            player = new Player(n, 50, 5, null, null);
+            
+            useTimeCrystal = new Command(true, false, false, false);
+            player.SetCommand(useTimeCrystal);
+            player.Move(contested);
+
+            Assert.IsTrue(player.IsDead());
+            Assert.AreEqual(5, pack.Monster.HitPoints);
+            foreach (Monster m in pack.Monsters)
+                Assert.AreEqual(5, m.HitPoints);
+
         }
     }
 }

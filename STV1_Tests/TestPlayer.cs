@@ -35,7 +35,19 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPlayerPickUp()
         {
-            Assert.IsTrue(false);
+            Node n = new Node();
+            Node m = new Node();
+            n.Connect(m);
+
+            m.AddItem(new TimeCrystal());
+            m.AddItem(new HealingPotion());
+
+            Player p = new Player(n, 10, 10, null, null);
+            Assert.AreEqual(false, p.UseHealingPotion());
+
+            p.Move(m);
+            Assert.AreEqual(true, p.UseHealingPotion());
+            Assert.AreEqual(true, p.UseTimeCrystal());
         }
 
         [TestMethod]

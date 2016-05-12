@@ -174,7 +174,7 @@ namespace STV1
 
         public void CheckForCombat()
         {
-            while (playerInNode != null && packsInNode.Count > 0)
+            while (!playerInNode.IsDead() && playerInNode != null && packsInNode.Count > 0)
                 doCombat(playerInNode);
 
         }
@@ -194,19 +194,23 @@ namespace STV1
         {
             bool timeCrystal = false;
             Command c = player.GetCommand();
-            if (c.useItem)
+            if (c != null)
             {
-
-                if (c.timeCrystal) { timeCrystal = player.UseTimeCrystal(); }
-                else if (c.healingPotion) { player.UseHealingPotion(); }
-
-            }
-            if (timeCrystal)
-                foreach (Monster m in pack.Monsters)
+                if (c.useItem)
                 {
-                    player.Attack(m);
-                }
 
+                    if (c.timeCrystal) { timeCrystal = player.UseTimeCrystal(); }
+                    else if (c.healingPotion) { player.UseHealingPotion(); }
+
+                }
+                if (timeCrystal)
+                    foreach (Monster m in pack.Monsters)
+                    {
+                        player.Attack(m);
+                    }
+                else
+                    player.Attack(pack.Monster);
+            }
             else
                 player.Attack(pack.Monster);
             pack.Attack(player);

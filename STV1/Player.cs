@@ -8,7 +8,7 @@ namespace STV1
 {
     public class Player : Creature
     {
-        private float maxHitPoints;
+        private float maxHitPoints = float.MaxValue;
         private int killPoints;
         private List<Item> bag;
         Queue<Command> commands;
@@ -27,14 +27,17 @@ namespace STV1
         {
             maxHitPoints = hitPoints;
             HitPoints = hitPoints;
+            bag = new List<Item>();
+            commands = new Queue<Command>();
             this.dungeon = dungeon;
             this.game = game;
             location.PlayerEnters(this);
+            
         }
 
         public override void Move(Node target)
         {
-            if (target == dungeon.Exit)
+            if (dungeon != null && target == dungeon.Exit)
             { game.NextDungeon(); }
             Location.PlayerLeaves();
             target.PlayerEnters(this);
@@ -56,8 +59,17 @@ namespace STV1
         // TODO: finish this method.
         public Command GetCommand()
         {
-            Command currentCommand = commands.Dequeue();
-            return currentCommand;
+            if (commands.Count > 0)
+            {
+                Command currentCommand = commands.Dequeue();
+                return currentCommand;
+            }
+            return null;
+        }
+
+        public void SetCommand(Command command)
+        {
+            commands.Enqueue(command);
         }
 
         public override float HitPoints

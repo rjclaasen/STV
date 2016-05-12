@@ -14,7 +14,9 @@ namespace STV1
             Dungeon dungeon = player.Dungeon;
             Node bridge = player.Location;
 
-            bool onbridge = dungeon.IsBridge(bridge);
+            bool onbridge = false;
+            if(dungeon!= null)
+                onbridge = dungeon.IsBridge(bridge);
 
             // Destroy the bridge and nodes behind it.
             if (onbridge)
