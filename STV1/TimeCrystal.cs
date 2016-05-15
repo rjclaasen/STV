@@ -8,7 +8,6 @@ namespace STV1
 {
     public class TimeCrystal : Item
     {
-        // TODO: Implement method.
         public override void Use(Player player)
         {
             Dungeon dungeon = player.Dungeon;

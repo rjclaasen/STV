@@ -27,7 +27,6 @@ namespace STV1
         {
             maxHitPoints = hitPoints;
             HitPoints = hitPoints;
-            //bag = new List<Item>();
             commands = new Queue<Command>();
             this.dungeon = dungeon;
             this.game = game;
@@ -57,7 +56,6 @@ namespace STV1
             bag.Add(item);
         }
 
-        // TODO: finish this method.
         public Command GetCommand()
         {
             if (commands.Count > 0)
