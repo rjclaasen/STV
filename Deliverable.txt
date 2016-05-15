@@ -1,0 +1,45 @@
+Report SVT practicum 1 by Raphaël Claasen and Sjors van der Heijden (3680320)
+
+General Statistics:
+N = 		12
+locs = 		421
+locs_avg = 	35.08
+M_avg = 	3.25
+M_max = 	12
+Cabe_avg = 	
+Cabe_max = 	
+
+Unittesting Statistics:
+N' =		11
+Tlocs =		403
+Tlocs_avg = 36.64
+E = 		13 uur per persoon? Meer/minder?
+E_avg = 	2.36 uur
+bugs = 		16 bij mij zo ongeveer
+
+Unittesting overview:
+
+
+
+Contribution: Sjors																Relative effort
+Dungeon constructor																30%
+ShortestPath																	15%
+Connectivity																	2%
+Monster distribution															5%
+Item distribution																2%
+Game.NextDungeon																1%
+Combat 																			15%
+
+Unittests for:
+Dungeon (especially shortest path, constraints, connectitity and reachability) 	15%
+Node.DoCombat, Node.DoCombatRound, Node.AddItem									5%
+Pack.Retreat																	5%
+TimeCrystal in combat															5%
+
+
+Contribution: Raphaël															
+
+
+
+Methods: 1 + 1 + 8 + 5 + 1 + 1 + 1 + 2 + 12 + 6 + 1 = 39
+Classes: 12
