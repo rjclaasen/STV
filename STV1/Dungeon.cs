@@ -10,133 +10,100 @@ namespace STV1
     {
         private Node start;
         private List<Node> otherNodes;
+        private List<List<Node>> zones;
         private Node exit;
         private const int M = 5;
         private const int NODES_PER_ZONE = 10;
         private const int MAX_CONNECTIVITY = 3;
-        private const int TOTAL_MONSTERS = 50;
+        public const int TOTAL_MONSTERS = 50;
         private const int TOTAL_PACKS = 5;
-        private const int ITEMS_PER_ZONE = 10;
+        private const int TIME_CRYSTALS_PER_ZONE = 5;
         private int packSize;
 
-        // Temporary constructor. Doesn't actually create a proper dungeon.
-        // TODO: Make a proper dungeon in this constructor.
+        
         public Dungeon(int difficulty)
         {
             Random rnd = new Random();
             start = new Node(0,M,0);
             otherNodes = new List<Node>();
-            Node[] dungeon = new Node[(difficulty + 1) * NODES_PER_ZONE + difficulty + 2];
-            dungeon[0] = start;
-            dungeon[(difficulty + 1) * NODES_PER_ZONE + 1] = exit;
+            zones = new List<List<Node>>();
+                        
             /* Start = 0
             * Zone k = 1 + (k-1) * NODESPERZONE tot (k * NODESPERZONE)
             * Bridge of bridge level j = j * NODESPERZONE
             */
 
+            Node last = start;
 
             //create the zones
             for (int k = 1; k < difficulty + 2; k++)
             {
-                int zoneStart = (k - 1) * NODES_PER_ZONE + k;
+                List<Node> zone = new List<Node>();
                 
                 //Connect the first two nodes with the last node of previous zone
-                dungeon[zoneStart] = new Node(0,M);
-                dungeon[zoneStart + 1] = new Node(0,M);
-                dungeon[zoneStart].Connect(dungeon[zoneStart - 1]);
-                dungeon[zoneStart + 1].Connect(dungeon[zoneStart - 1]);
+
+                Node x = new Node(0, M);
+                zone.Add(x);
+                Node y = new Node(0, M);
+                zone.Add(y);
+                x.Connect(last);
+                y.Connect(last);
+                x.Connect(y);
 
                 //Create the nodes in the zone
                 for (int i = 2; i < NODES_PER_ZONE; i++)
                 {
-                    Node x = new Node(0,M);
-                    dungeon[zoneStart + i] = x;
+                    //Create new node z
+                    Node z = new Node(0, M);
+
+                    //Pick two different nodes that have less than 3 connections.
+                    Node rndNode1;
+                    do
+                    {
+                        rndNode1 = zone[rnd.Next(zone.Count)];
+                    } while (rndNode1.ConnectionsCount > MAX_CONNECTIVITY);
+                    Node rndNode2;
+                    do
+                    {
+                        rndNode2 = zone[rnd.Next(zone.Count)];
+                    } while (rndNode2 == rndNode1 || rndNode2.ConnectionsCount > MAX_CONNECTIVITY);
+
+                    //Remove connection between the nodes if it exists
+                    if (rndNode1.Adjacent(rndNode2))
+                        rndNode1.Disconnect(rndNode2);
+
+                    //Connect z to the chosen nodes
+                    z.Connect(rndNode1);
+                    z.Connect(rndNode2);
+
+                    //Add z to the list of nodes in this zone
+                    zone.Add(z);
                     
-                    //Choose two nodes to connect to
-                    int a = zoneStart + rnd.Next(0,i);
-                    while(dungeon[a].ConnectionsCount > MAX_CONNECTIVITY)
-                        a = zoneStart + rnd.Next(0, i);
-                    x.Connect(dungeon[a]);
-                    int b = a;
-                    while (b == a || dungeon[b].ConnectionsCount > MAX_CONNECTIVITY)
-                        b = zoneStart + rnd.Next(0, i);
-                    x.Connect(dungeon[b]);
-                    if(dungeon[b].Adjacent(dungeon[a]))
-                    {
-                        dungeon[b].Disconnect(dungeon[a]);
-                    }
                 }
-                //Connect the last node of the zone (the bridge) to two earlier nodes
-                Node bridge = new Node(k,M);
-                dungeon[zoneStart + NODES_PER_ZONE] = bridge;
-                bridge.Connect(dungeon[zoneStart + NODES_PER_ZONE - 1]);
-                bridge.Connect(dungeon[zoneStart + NODES_PER_ZONE - 2]);
+                //Create the last node in this zone, which will be the bridge, and connect it to two preceding nodes
+                Node bridge = new Node(k, M);
+                bridge.Connect(zone[zone.Count - 1]);
+                bridge.Connect(zone[zone.Count - 2]);
+                zone.Add(bridge);
+                last = bridge;
+                //This zone is done, add it to the list of zones
+                zones.Add(zone);
             }
 
-            exit = dungeon[dungeon.Length - 1];
+            //The exit needs some special treatment, it has capacity 0
+            exit = zones.Last().Last();
+            zones.Last().Remove(exit);
             exit.setCapacity(M, -1);
-            for (int i = 1; i <= dungeon.Length - 2; i++)
-                otherNodes.Add(dungeon[i]);
 
-            while (ConnectivityDegree > 3)
-            {
-                Node n = new Node(0, M);
-                foreach (Node m in otherNodes)
-                    if (m.ConnectionsCount < 3)
-                    {
-                        m.Connect(n);
-                        break;
-                    }
-                otherNodes.Add(n);
-            }
+            //Now put all the lists together as one
+            foreach (List<Node> zone in zones)
+                otherNodes.AddRange(zone);
+
+
+            FixConnectivity();
 
             // Add monsters
-            packSize = TOTAL_MONSTERS / TOTAL_PACKS;
-            for(int k = 1; k < difficulty + 2; k++)
-            {
-                int zoneStart = (k - 1) * NODES_PER_ZONE + 1;
-                int zoneEnd = k * NODES_PER_ZONE;
-                int mobs = 2 * k * TOTAL_MONSTERS / ((difficulty + 2) * (difficulty + 1));
-                int actualmobs = 0;
-                while(actualmobs < mobs)
-                {
-                    int x = rnd.Next(zoneStart,zoneEnd + 1);
-                    Node n = dungeon[x];
-                    int mobsInNode = 0;
-                    foreach (Pack p in n.PacksInNode)
-                        mobsInNode += p.Size;
-
-                    if (mobsInNode < n.Capacity)
-                    {
-                        Pack p;
-                        if (packSize <= n.Capacity - mobsInNode && packSize <= mobs - actualmobs)
-                            p = new Pack(packSize, n);
-                        else if (n.Capacity - mobsInNode <= mobs - actualmobs)
-                            p = new Pack(n.Capacity - mobsInNode, n);
-                        else
-                            p = new Pack(mobs - actualmobs, n); 
-                        actualmobs += p.Size;
-                    }
-                }
-            }
-
-            // Add items
-            for(int k = 1; k < difficulty + 2; k++)
-            {
-                int zoneStart = (k - 1) * NODES_PER_ZONE + 1;
-                int zoneEnd = k * NODES_PER_ZONE;
-
-                for (int i = 0; i < ITEMS_PER_ZONE; i++)
-                {
-                    int x = rnd.Next(zoneStart + i, zoneEnd + 1);
-                    float j = rnd.Next();
-                    if (j < 0.1f)
-                        dungeon[x].AddItem(new TimeCrystal());
-                    else
-                        dungeon[x].AddItem(new HealingPotion());
-                }
-            }
-
+            DistributeMonsters(difficulty);
         }
 
         /// <summary>
@@ -191,7 +158,6 @@ namespace STV1
             if (!found) // Pad bestaat niet
                 return null;
 
-            // TODO: Test method
             path.Reverse();
             return path;
         }
@@ -298,12 +264,119 @@ namespace STV1
             get
             {
                 int connections = 0;
-                foreach (Node n in otherNodes)
+                foreach(List<Node> zone in zones)
+                    foreach (Node n in zone)
                     connections += n.ConnectionsCount;
                 connections += start.ConnectionsCount;
                 connections += exit.ConnectionsCount;
                 return (double)connections / Size;
             }
+        }
+
+        private void FixConnectivity()
+        {
+            while (ConnectivityDegree > 3)
+            {
+                Node n = new Node(0, M);
+                List<Node> z = new List<Node>();
+                bool breakLoop = false;
+                foreach (List<Node> zone in zones)
+                {
+                    z = zone;
+                    foreach (Node m in zone)
+                        if (m.ConnectionsCount < 3)
+                        {
+                            m.Connect(n);
+                            breakLoop = true;
+                            break;
+                        }
+                    if (breakLoop)
+                        break;
+                }
+                z.Add(n);
+                otherNodes.Add(n);
+            }
+        }
+
+        private void DistributeMonsters(int difficulty)
+        {
+            Random rnd = new Random();
+            packSize = TOTAL_MONSTERS / TOTAL_PACKS;
+
+            foreach (List<Node> zone in zones)
+            {
+                int k = zones.IndexOf(zone) + 1;
+                int mobs = 2 * k * TOTAL_MONSTERS / ((difficulty + 2) * (difficulty + 1));
+                int zoneCapacity = (zone.Count - 1) * M + zone.Last().Capacity;
+                if (mobs > zoneCapacity)
+                    mobs = zoneCapacity;
+                int actualmobs = 0;
+                while (actualmobs < mobs) // As long as we haven't placed enough mobs in the zone, continue (doesn't finish if there's too many monsters to place)
+                {
+                    Node x = zone[rnd.Next(zone.Count)];
+                    int mobsInNode = 0;
+                    foreach (Pack p in x.PacksInNode)
+                        mobsInNode += p.Size;
+
+                    if (mobsInNode < x.Capacity)
+                    {
+                        Pack p;
+                        if (packSize <= x.Capacity - mobsInNode && packSize <= mobs - actualmobs)
+                            p = new Pack(packSize, x);
+                        else if (x.Capacity - mobsInNode <= mobs - actualmobs)
+                            p = new Pack(x.Capacity - mobsInNode, x);
+                        else
+                            p = new Pack(mobs - actualmobs, x);
+                        actualmobs += p.Size;
+                    }
+                }
+            }
+        }
+
+        public void DistributeItems(Player player)
+        {
+            Random rnd = new Random();
+
+            //Calculate how many health pots we need
+            float healValue = new HealingPotion().HealValue;
+            float totalMonsterHealth = 0;
+            foreach (List<Node> zone in zones)
+            {
+                foreach (Node n in zone)
+                {
+                    foreach (Pack p in n.PacksInNode)
+                    {
+                        totalMonsterHealth += p.Size * p.Monster.HitPoints;
+                    }
+                }
+            }
+            int healthPots = (int)((totalMonsterHealth - player.HitPoints) / healValue);
+            int healthPotsPerZone = healthPots / zones.Count;
+            
+            //Distribute the healthpots and timecrystals evenly over the zones
+            foreach (List<Node> zone in zones)
+            {
+                //Put every health pot in a random node
+                for (int i = 0; i < healthPotsPerZone; i++)
+                {
+                    Node x = zone[rnd.Next(zone.Count)];
+                    x.AddItem(new HealingPotion());
+                }
+                //Put every timecrystal in a random node
+                for(int i = 0; i < TIME_CRYSTALS_PER_ZONE; i++)
+                {
+                    Node x = zone[rnd.Next(zone.Count)];
+                    x.AddItem(new TimeCrystal());
+                }
+            }
+
+
+
+        }
+
+        public List<List<Node>> Zones
+        {
+            get { return zones; }
         }
     }
 }

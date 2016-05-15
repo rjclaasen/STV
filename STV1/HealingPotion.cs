@@ -14,5 +14,10 @@ namespace STV1
         {
             player.HitPoints += healValue;
         }
+
+        public float HealValue
+        {
+            get { return healValue; }
+        }
     }
 }

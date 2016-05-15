@@ -20,7 +20,6 @@ namespace STV1_Tests
             Assert.IsTrue(d.PathExists(d.Start, d.Exit));
             Assert.IsTrue(d.AllNodesReachable());
             Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
-
         }
 
         [TestMethod]
@@ -33,6 +32,58 @@ namespace STV1_Tests
             Assert.IsTrue(d.ConnectivityDegree <= 3.0f);
         }
 
+        [TestMethod]
+        public void TestDungeonConstraints()
+        {
+            int level = 3;
+            Dungeon d = new Dungeon(level);
+            Player player = new Player(d.Start, 100, 10, d, null);
+
+            List<Node> path = d.ShortestPath(d.Start, d.Exit);
+            bool pathContainsAllBridges = true;
+            List<Node> bridges = new List<Node>();
+            foreach (Node n in GetAllNodesFromDungeon(d))
+                if (d.IsBridge(n))
+                    bridges.Add(n);
+            foreach (Node n in bridges)
+                if (!path.Contains(n))
+                        pathContainsAllBridges = false;
+
+            Assert.IsTrue(pathContainsAllBridges);
+
+            List<List<Node>> zones = d.Zones;
+            foreach(List<Node> zone in zones)
+            {
+                int expectedMobs = 2 * (1 + zones.IndexOf(zone)) * Dungeon.TOTAL_MONSTERS / ((level + 1) * (level + 2));
+                int actualMobs = 0;
+                foreach (Node n in zone)
+                    foreach (Pack p in n.PacksInNode)
+                    {
+                        actualMobs += p.Size;
+                    }
+                Assert.AreEqual(expectedMobs, actualMobs);
+            }
+
+            float totalMonsterHealth = 0;
+            float totalPotionHealth = 0;
+            foreach(List<Node> zone in zones)
+            {
+                foreach (Node n in zone)
+                {
+                    foreach (Pack p in n.PacksInNode)
+                    {
+                        totalMonsterHealth += p.Size * p.Monster.HitPoints;
+                    }
+                    foreach (HealingPotion pot in n.Items)
+                        totalPotionHealth += pot.HealValue;
+                }
+            }
+
+            float totalPlayerHealth = player.HitPoints;
+            Assert.IsTrue(totalPotionHealth + totalPlayerHealth <= totalMonsterHealth);
+
+
+        }
         [TestMethod]
         public void TestDungeonShortestPath()
         {
@@ -190,7 +241,7 @@ namespace STV1_Tests
             List<Node> allNodes = GetAllNodesFromDungeon(d);
 
             int connections = 0;
-            foreach(Node n in allNodes)
+            foreach (Node n in allNodes)
             {
                 connections += n.ConnectionsCount;
             }
@@ -229,5 +280,7 @@ namespace STV1_Tests
 
             return result;
         }
+
+        
     }
 }

@@ -18,6 +18,7 @@ namespace STV1
         {
             dungeon = NextDungeon();
             player = new Player(dungeon.Start, 25, 5, dungeon, this);
+            dungeon.DistributeItems(player);
         }
 
         public Dungeon NextDungeon()

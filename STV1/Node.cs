@@ -225,6 +225,10 @@ namespace STV1
                 return false;
             return true;
         }
-
+        
+        public List<Item> Items
+        {
+            get { return items; }
+        }
     }
 }
