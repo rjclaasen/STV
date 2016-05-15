@@ -1,4 +1,4 @@
-Report SVT practicum 1 by Raphaël Claasen and Sjors van der Heijden (3680320)
+﻿Report SVT practicum 1 by Raphaël Claasen (3977951) and Sjors van der Heijden (3680320)
 
 General Statistics:
 N = 		12
@@ -6,40 +6,70 @@ locs = 		421
 locs_avg = 	35.08
 M_avg = 	3.25
 M_max = 	12
-Cabe_avg = 	
-Cabe_max = 	
+Cabe_avg = 	16.6
+Cabe_max = 	64
 
 Unittesting Statistics:
 N' =		11
 Tlocs =		403
-Tlocs_avg = 36.64
-E = 		13 uur per persoon? Meer/minder?
+Tlocs_avg = 	36.64
+E = 		26 uur
 E_avg = 	2.36 uur
-bugs = 		16 bij mij zo ongeveer
+bugs = 		26
 
 Unittesting overview:
+CLASS			NOT COVERED (BLOCKS)	NOT COVERED (% BLOCKS)	COVERED (BLOCKS)	COVERED (% BLOCKS)
+Command			0			0.00%			2			100%
+Creature		0			0.00%			24			100%
+Dungeon			3			0.90%			329			99.10%
+Game			3			13.04%			20			86.96%
+HealingPotion		0			0.00%			7			100%
+Monster			0			0.00%			2			100%
+Node			9			5.77%			147			94.23%
+Pack			2			1.85%			106			98.15%
+Player			2			2.22%			88			97.78%
+Program			1			100%			0			0.00%
+TimeCrystal		0			0.00%			31			100%
 
+Explanations for not reaching 100%:
+Dungeon: Contains a method that is only used during testing, which doesn't need to be tested.
+Node: Due to time constraints, we did not manage to cover everything with testing.
+Other: Some parts of our program should never get called during play. Due to time constraints, we have chosen not to cover all of those.
+       We also don't cover some minor functionalities, such as not using a time crystal when the player doesn't have a time crystal.
 
-
-Contribution: Sjors																Relative effort
-Dungeon constructor																30%
-ShortestPath																	15%
-Connectivity																	2%
-Monster distribution															5%
-Item distribution																2%
-Game.NextDungeon																1%
-Combat 																			15%
+Contribution: Sjors								Relative effort
+Dungeon constructor								30%
+ShortestPath									15%
+Connectivity									2%
+Monster distribution								5%
+Item distribution								2%
+Game.NextDungeon								1%
+Combat 										15%
 
 Unittests for:
 Dungeon (especially shortest path, constraints, connectitity and reachability) 	15%
-Node.DoCombat, Node.DoCombatRound, Node.AddItem									5%
-Pack.Retreat																	5%
-TimeCrystal in combat															5%
-
-
-Contribution: Raphaël															
-
-
+Node.DoCombat, Node.DoCombatRound, Node.AddItem					5%
+Pack.Retreat									5%
+TimeCrystal in combat								5%
 
 Methods: 1 + 1 + 8 + 5 + 1 + 1 + 1 + 2 + 12 + 6 + 1 = 39
 Classes: 12
+
+
+Contribution: Raphaël															
+Creature, Player & Monster							30%
+Dungeon: Node destruction by time crystal					5%
+Item, HealingPotion & TimeCrystal						10%
+Node (except item & combat)							15%
+Pack (except combat & retreating)						5%
+
+Unit tests for:
+Creature									8%
+HealingPotion									2%
+Node (except Sjors' contributions)						10%
+Pack (except Sjors' contributions)						7%
+Player										5%
+TimeCrystal on bridge								3%
+
+Methods: ~50
+Classes: 11
