@@ -38,7 +38,7 @@ namespace STV1_Tests
             int level = 3;
             Dungeon d = new Dungeon(level);
             Player player = new Player(d.Start, 100, 10, d, null);
-
+            d.DistributeItems(player);
             List<Node> path = d.ShortestPath(d.Start, d.Exit);
             bool pathContainsAllBridges = true;
             List<Node> bridges = new List<Node>();
@@ -74,8 +74,9 @@ namespace STV1_Tests
                     {
                         totalMonsterHealth += p.Size * p.Monster.HitPoints;
                     }
-                    foreach (HealingPotion pot in n.Items)
-                        totalPotionHealth += pot.HealValue;
+                    foreach (Item pot in n.Items)
+                            if(pot is HealingPotion)
+                                totalPotionHealth += ((HealingPotion)pot).HealValue;
                 }
             }
 
