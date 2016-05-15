@@ -75,7 +75,12 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPlayerHitPoints()
         {
-            Assert.IsTrue(false);
+            Node n1 = new Node(0, 0, 10);
+            Player player = new Player(n1, 10, 10, null, null);
+            Assert.AreEqual(10, player.HitPoints);
+            player.HitPoints = 100;
+            Assert.AreEqual(10, player.HitPoints);
+
         }
 
         [TestMethod]
@@ -87,7 +92,23 @@ namespace STV1_Tests
         [TestMethod]
         public void TestPlayerUseHealingPotion()
         {
-            Assert.IsTrue(false);
+            Node n1 = new Node();
+            Node n2 = new Node();
+            n1.Connect(n2);
+
+            Player player = new Player(n1, 100, 10, null, null);
+            player.HitPoints = 85;
+
+            n2.AddItem(new HealingPotion());
+            player.Move(n2);
+            player.UseHealingPotion();
+
+            Assert.AreEqual(95, player.HitPoints);
+
+            n1.AddItem(new HealingPotion());
+            player.Move(n1);
+            player.UseHealingPotion();
+            Assert.AreEqual(100, player.HitPoints);
         }
     }
 }

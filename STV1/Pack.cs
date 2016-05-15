@@ -57,7 +57,7 @@ namespace STV1
             float cumulativeHealth = 0;
             foreach (Monster m in monsters)
                 cumulativeHealth += m.HitPoints;
-            if (player.HitPoints < cumulativeHealth)
+            if (player.HitPoints > cumulativeHealth)
                 foreach (Node n in Location.ConnectedNodes)
                     if (Move(n))
                         return true;

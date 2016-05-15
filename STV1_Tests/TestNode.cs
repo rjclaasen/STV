@@ -97,7 +97,13 @@ namespace STV1_Tests
         [TestMethod]
         public void TestNodeAddItem()
         {
-            Assert.IsTrue(false);
+            Node n1 = new Node();
+
+            n1.AddItem(new HealingPotion());
+            Assert.AreEqual(1, n1.Items.Count);
+
+            n1.AddItem(new TimeCrystal());
+            Assert.AreEqual(2, n1.Items.Count);
         }
 
         [TestMethod]
@@ -186,13 +192,27 @@ namespace STV1_Tests
         [TestMethod]
         public void TestNodeDoCombat()
         {
-            Assert.IsTrue(false);
+            Node n1 = new Node(0, 0, 10);
+            Node n2 = new Node(0, 0, 10);
+            n1.Connect(n2);
+            Player player = new Player(n1, 100, 100, null, null);
+            Pack pack = new Pack(5, n1, 10, 5);
+
+            n1.doCombat();
+            Assert.IsTrue(player.IsDead() || pack.Dead || n2.PacksInNode.Count == 1);
         }
 
         [TestMethod]
         public void TestNodeDoCombatRound()
         {
-            Assert.IsTrue(false);
+            Node n1 = new Node(0, 0, 10);
+            Player player = new Player(n1, 100, 10, null, null);
+            Pack pack = new Pack(10, n1, 10, 5);
+
+            n1.doCombatRound(player, pack);
+            Assert.AreEqual(9, pack.Size);
+            Assert.AreEqual(55, player.HitPoints);
+
         }
     }
 }

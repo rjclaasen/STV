@@ -175,16 +175,16 @@ namespace STV1
         public void CheckForCombat()
         {
             while (playerInNode != null && !playerInNode.IsDead() && packsInNode.Count > 0)
-                doCombat(playerInNode);
+                doCombat();
 
         }
 
-        public void doCombat(Player player)
+        public void doCombat()
         {
             bool inCombat = true;
             while(inCombat)
             {
-                inCombat = doCombatRound(player, packsInNode[0]);
+                inCombat = doCombatRound(playerInNode, packsInNode[0]);
             }
             return;
 
@@ -213,13 +213,16 @@ namespace STV1
             }
             else
                 player.Attack(pack.Monster);
+            pack.Update();
+            if (pack.Dead)
+                return false;
             pack.Attack(player);
 
-            pack.Update();
-            if (pack.Dead || player.IsDead())
+            
+            if (player.IsDead())
                 return false;
             Command g = player.GetCommand();
-            if (g.retreat)
+            if (g!= null && g.retreat)
                 player.Move(g.node);
             if (pack.Retreat(player))
                 return false;
